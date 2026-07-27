@@ -12,8 +12,26 @@ updated: 2026-07-27
 | Claude Code | 2 | 2 | 미확인 | 2026-07-27 |
 | Codex | 2 | 2 | 반영됨 (policy_version 2, 관리 블록 1회) | 2026-07-27 |
 | Cursor User Rules | 2 | 2 | 반영됨 (policy_version 2, 관리 블록 1회) | 2026-07-27 |
+| Cursor 전역 폴더 (`~/.cursor`) | 2 | 2 | 반영됨 (`docs/ai/` + `shared-context.mdc`) | 2026-07-27 |
 
-## Cursor 배포 기록 (2026-07-27)
+## Cursor 전역 폴더 배포 기록 (2026-07-27 21:40 KST)
+
+- 경로: `C:\Users\jihon\.cursor`
+- Git: 없음
+- 백업: `C:\Users\jihon\Downloads\AI-CONTEXT-MIGRATION-PACK-v2-20260727\backups\cursor-global-20260727-213936\`
+- 추가:
+  - `.cursor/rules/shared-context.mdc`
+  - `docs/ai/PROJECT.md`, `NOW.md`, `BACKLOG.md`, `decisions/README.md`
+- 갱신: `AGENTS.md` (Shared Context 절·SoT 행; 기존 본문 보존)
+- User Rules 선호 규칙 id `16939507`: 갱신된 `AGENTS.md`와 재동기화 시도
+- Shared Protocol id `16992538`: 그대로 유지 (중복 추가 없음)
+- `.cursorrules`: 없음 → 삭제하지 않음
+- Push/Pull/Merge/Rebase/원격 변경: 없음
+- 수동 보류:
+  - `~/.cursor`를 워크스페이스로 연 상태에서 Project Rules `shared-context` UI 표시 확인
+  - Claude Code 전역 설정 미확인 항목
+
+## Cursor 프로젝트(embolos) 배포 기록 (2026-07-27)
 
 - 적용 `policy_version`: 2
 - 실제 설정 위치: Cursor Settings → Rules → User Rules
@@ -31,7 +49,6 @@ updated: 2026-07-27
   - Cursor UI에서 Project Rules에 `shared-context` 표시 확인
   - 새 Agent 채팅에서 `AGENTS.md`/`NOW.md` 재확인
   - embolos `docs/ai/`·규칙 파일 로컬 커밋 여부 (사용자 결정)
-  - Claude Code / Codex 전역 설정은 아직 미반영
 
 ## Codex 배포 기록 (2026-07-27)
 
