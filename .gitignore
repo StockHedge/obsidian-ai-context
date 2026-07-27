@@ -1,0 +1,16 @@
+# Obsidian's volatile per-window state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace*.json
+.obsidian/cache/
+
+# Local trash and OS metadata
+.trash/
+Thumbs.db
+.DS_Store
+
+# Temporary and editor files
+*.tmp
+*.temp
+*.bak
+*~
