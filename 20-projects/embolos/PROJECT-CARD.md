@@ -25,8 +25,9 @@ tags: [embolos, multi-tenant-saas, ops, billing]
 - 현재 브랜치: `legal-kakaopay-2026-07`
 - 확인한 HEAD: `459a5c0`
 - 원격 추적: 현재 브랜치가 `origin/legal-kakaopay-2026-07`을 추적
-- 프로젝트 `AGENTS.md`: 2026-07-27 확인 시 없음
-- 현재 상태 `docs/ai/NOW.md`: 2026-07-27 확인 시 없음
+- 프로젝트 `AGENTS.md`: 2026-07-27 Cursor v2 마이그레이션으로 신설
+- 현재 상태 `docs/ai/NOW.md`: 2026-07-27 신설 (실측 Git·헬스 기준)
+- Cursor 어댑터: `.cursor/rules/shared-context.mdc`
 - 기존 상세 인계: `docs/현재_상태_핸드오프.md`, `docs/handoff/pc-laptop-sync.md`
 
 프로젝트 저장소의 코드·Git·최신 검증 결과가 이 카드보다 우선한다. 기존 인계 문서는 일부 시점 정보가 오래됐으므로 단독 기준으로 사용하지 않는다.
