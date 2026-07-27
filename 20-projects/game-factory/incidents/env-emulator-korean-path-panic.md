@@ -32,4 +32,5 @@ SDK 경로에 **한글이 포함**되어 에뮬레이터가 경로 인코딩을 
 - SDK / 빌드 경로는 처음부터 ASCII 정션으로 고정.
 
 ## 관련
-- 세션 메모리: `android-emulator-korean-path`
+- 공용 패턴: [[windows-ascii-tool-paths]]
+- 과거 비공유 식별자: `android-emulator-korean-path` (역사 기록, 기준 정보 아님)

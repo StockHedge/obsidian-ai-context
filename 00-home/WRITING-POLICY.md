@@ -1,6 +1,7 @@
 ---
 type: operating-policy
-schema_version: 1
+schema_version: 2
+policy_version: 2
 updated: 2026-07-27
 ---
 
@@ -74,12 +75,15 @@ updated: 2026-07-27
 ## Inbox 수명
 
 - `10-inbox/`는 임시 공간이며 기준 정보가 아니다.
-- 7일 안에 프로젝트 사건·마일스톤·패턴으로 승격할지 검토한다.
+- 모든 초안에는 가능하면 `created`, `review_by`, `agents`, `project`를 기록한다.
+- [[10-inbox/INBOX-REVIEW]]의 트리거에 따라 검토하며, 기본 `review_by`는 작성 후 7일이다.
 - 30일 이상 가치가 확인되지 않은 기록은 `90-archive/`로 옮긴다.
 - 다른 AI가 이어받아야 하는 현재 상태는 Inbox가 아니라 프로젝트 `NOW.md`에 둔다.
+- AI는 승격·보관 후보를 제안할 수 있지만 자동 삭제하지 않는다.
 
 ## 동시 작업
 
 - 가능한 한 AI마다 새 노트를 생성하고 같은 노트를 동시에 편집하지 않는다.
 - 프로젝트 코드를 동시에 수정한다면 별도 Git 브랜치 또는 worktree를 사용한다.
 - `PROJECT-CARD.md`와 `PROJECT-INDEX.md`는 마일스톤 체크포인트에서만 갱신한다.
+- Vault 정책과 구조 변경은 [[VERSION-CONTROL]]에 따라 로컬 커밋으로 남긴다.

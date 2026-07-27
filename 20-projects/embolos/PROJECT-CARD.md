@@ -1,84 +1,91 @@
 ---
 type: project-card
-schema_version: 1
+schema_version: 2
 project_id: embolos
 project: Embolos
 status: active
 repo_path: C:\Users\jihon\projects\embolos
+branch: legal-kakaopay-2026-07
+head_commit: 459a5c0
 updated: 2026-07-27
-tags: [embolos, platform, ops, billing]
+last_verified: 2026-07-27
+agents: [cursor, codex]
+tags: [embolos, multi-tenant-saas, ops, billing]
 ---
 
 # Embolos — 프로젝트 카드
 
-작성: 2026-07-24 (PC 이관 직후)
-근거: `docs/현재_상태_핸드오프.md`(갱신 2026-07-13) + 이후 커밋(`legal-kakaopay-2026-07`) 대조
-용도: 프로젝트의 큰 트랙을 찾기 위한 카드. 실제 현재 상태는 저장소의 `docs/ai/NOW.md` 또는 최신 handoff 문서를 우선한다.
+## 한 줄 목적
 
----
+판매자별 상점, 구매 흐름, 운영 기능을 제공하는 멀티테넌트 AI 쇼핑몰 SaaS 플랫폼이다.
 
-## 이미 끝난 것 (문서보다 커밋이 앞섬)
+## 기준 위치
 
-- **스튜디오 다중 페이지 P4 1~5단계** — `store_pages` · 템플릿/AI 온램프 · SEO · 페이지 수 플랜 게이팅
-- **통합 앱 P0~P3** — 구매자 JWT · 마켓 · 구매 · 셀러 모드 API
-- 구 핸드오프의 에디터 Phase A/B/C · 리치텍스트 · prod 홀드 해제
+- 로컬 저장소: `C:\Users\jihon\projects\embolos`
+- 현재 브랜치: `legal-kakaopay-2026-07`
+- 확인한 HEAD: `459a5c0`
+- 원격 추적: 현재 브랜치가 `origin/legal-kakaopay-2026-07`을 추적
+- 프로젝트 `AGENTS.md`: 2026-07-27 확인 시 없음
+- 현재 상태 `docs/ai/NOW.md`: 2026-07-27 확인 시 없음
+- 기존 상세 인계: `docs/현재_상태_핸드오프.md`, `docs/handoff/pc-laptop-sync.md`
 
----
+프로젝트 저장소의 코드·Git·최신 검증 결과가 이 카드보다 우선한다. 기존 인계 문서는 일부 시점 정보가 오래됐으므로 단독 기준으로 사용하지 않는다.
 
-## 남아 있는 Phase / 트랙
+## 구조 지도
 
-### 1. 앱 P4 — 푸시·마감
-- 문서: `docs/app/embolos-app-plan.md`
-- Expo Push 전면(주문 상태·신규 주문·마케팅 옵트인)
-- 앱스토어 심사 준비 · 스토어 등록
-- ※ 웹 스튜디오 P4(다중 페이지)와 **별 트랙**
+- `backend/`: FastAPI, Jinja2, SQLAlchemy, Alembic 기반 API와 서버 렌더링
+- `frontend/`: React·Vite 기반 관리 화면
+- `design/`: 제품·UI 설계 자산
+- `docs/`: 앱, 운영, 결제, 광고, 오케스트레이션 및 인계 문서
+- `.github/workflows/`: 상태 점검과 예약 작업
 
-### 2. 트랙 B — 가격 / 무료 티어 실기능
-- 결정 완료, **구현 미착수**
-- 캡 · "made by embolos" 브랜드마크 · 하단 광고 바(체크아웃 미노출) · 게이팅
-- 무료 캡 정확 수치 설계 포함
+## 핵심 제약
 
-### 3. 광고 트랙 (리서치 후 경로 축소)
-- 셀러 서브도메인 AdFit **수익 셰어 불가**(카카오 서면 확정 2026-07-20)
-- 남는 경로: **플랫폼 페이지 우선 게재**(스토어 쪽은 dormant 정책)
-- 미결: 네이버 애드포스트 · AFP(invite-only, 장기)
-- 문서: `docs/research/ads-revenue-share-2026-07.md`
+- 하나의 DB에서 테넌트를 분리하며 애플리케이션의 tenant scope와 RLS를 함께 지킨다.
+- 앱 연결은 pooled Neon async 경로, 마이그레이션은 direct DB 경로를 사용한다.
+- 마이그레이션 실행 책임은 API에 있고 Ops 앱은 별도 마이그레이션을 실행하지 않는다.
+- 상업 `/admin`과 별도 Ops 콘솔의 UI·배포·쿠키 경계를 유지한다.
+- Ops 자동실행 화이트리스트는 비어 있으며 제안만 생성한다.
+- 구독 직접 변경과 카카오 결제 트리거는 사람 승인 없이 실행하지 않는다.
+- 사용자 문구는 프로젝트의 한국어 카피 규칙을 따른다.
 
-### 4. 트랙 D Phase 3 — 만료 테넌트 purge 활성화
-- 코드 완료, `tenant_purge_enabled=False` **이중 안전 off**
-- 백업 = 이메일 첨부(RESEND) + 텔레그램 알림 (SA/Drive 폐기)
-- 켜기 전: RESEND / ADMIN_ALLOWED_EMAILS / TELEGRAM_* / BILLING_CRON_SECRET 확인
+## 현재 단계
 
-### 5. 외부·대기 (사용자/콘솔)
-- **카카오페이 CID 발급**(심사·서류) — 브랜치 `legal-kakaopay-2026-07`와 직결 · 활성 CID면 구독 실청구 주의
-- 카카오/네이버 **test OAuth 콜백** 콘솔 등록 (`https://test.embolos.kr/oauth/*/callback`)
-- **구글 소셜로그인**(소셜 Phase 2) — 라우트 미구현
+### 확인된 현재 상태
 
-### 6. 최신 WIP 잔여
-- 커밋 `8c0b2e4`: 상품 쿠폰 스코프 테스트 + 정리 + 광고 리서치 — 마무리·정리 중일 수 있음
+- 최신 확인 커밋 `459a5c0`은 별도 AI Company Ops 콘솔, 제어면, Things 제품면 작업을 포함한다.
+- `docs/ai_company_ops.md`와 [[2026-07-26-ai-company-ops-console]]에 따르면 test Ops 배포와 S1~S3 범위가 구현됐다.
+- 작업 트리에 `docs.zip`과 `docs/handoff/`가 추적되지 않은 상태로 남아 있다. 검토 전 임의 커밋·삭제하지 않는다.
 
----
+### 문서상 남은 트랙
 
-## 한 줄 요약
+- 앱 P4: 푸시 알림과 앱스토어 마감
+- 가격·무료 티어의 실제 캡과 게이팅
+- 광고 대안 검토
+- 만료 테넌트 purge 활성화 전 운영 조건 확인
+- 카카오페이 CID와 OAuth 콜백 등 외부 콘솔 의존 작업
+- Ops prod 배포 상태, W5·W7 후속의 최신 재검증
 
-웹 스튜디오 P4는 사실상 완료. 남은 큰 축 = **앱 P4 · 트랙 B(무료 티어) · 광고 대안 · 카카오페이 CID/legal · purge 활성화 · 외부 OAuth/CID 대기**.
+이 목록은 여러 시점의 문서에서 모은 후보이며 다음 작업 시작 때 코드·Git·외부 환경으로 다시 확인한다.
 
----
+## 중요 사건
 
-## 운영 메모 (이관)
+- 현재 Vault에 Embolos 전용 사건 노트 없음
 
-- 작업 PC: `C:\Users\jihon\projects\embolos`, 브랜치 `legal-kakaopay-2026-07`
-- 왕복: 자리 뜰 때 push / 이어받을 때 pull — `docs/handoff/pc-laptop-sync.md`
-- 프로젝트 현재 상태와 설계 결정은 저장소 문서를 기준으로 유지한다.
-- 이 Vault에는 검증된 사건, 마일스톤, 회고만 승격한다.
+## 주요 마일스톤
 
-## Vault 기록
+- [[2026-07-26-ai-company-ops-console|AI Company Ops Console 구현·test 검증]]
 
-- [[2026-07-26-ai-company-ops-console|AI Company Ops Console 마일스톤]]
+## 관련 공통 패턴
 
-## 다음 정리
+- [[evidence-before-agent-claims]]
+- [[symptom-is-not-root-cause]]
 
-- 프로젝트 저장소에 `AGENTS.md`와 `docs/ai/` 구조 적용
-- 적용 전 임시 인계: [[2026-07-27-embolos-migration-handoff]]
-- 이 카드의 WIP 상태를 실제 Git과 최신 handoff 문서로 재검증
-- 로컬과 원격의 동기화는 [[GIT-POLICY]]에 맞춰 운영
+## 마지막 검증
+
+- 확인일: 2026-07-27
+- 확인한 근거: 저장소 Git 상태·브랜치·최근 커밋, `README.md`, `docs/ai_company_ops.md`, 앱 계획, 오케스트레이션 문서
+- 확인한 작업 트리: `docs.zip`, `docs/handoff/` 미추적
+- 확인하지 못한 항목: 운영 서비스의 현재 배포 상태, 외부 콘솔 설정, 실제 결제·OAuth 상태
+- 임시 Vault 인계: [[2026-07-27-embolos-migration-handoff]]
+- 다음 구조 작업: 프로젝트 저장소에 `AGENTS.md`와 `docs/ai/NOW.md`를 도입한 뒤 임시 Inbox 인계를 정리

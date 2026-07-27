@@ -1,11 +1,14 @@
 ---
 type: project-card
-schema_version: 1
+schema_version: 2
 project_id:
 status: active
 repo_path:
 remote_url:
+branch:
+head_commit:
 updated:
+last_verified:
 agents: []
 tags: []
 ---
@@ -34,3 +37,7 @@ tags: []
 ## 관련 공통 패턴
 
 ## 마지막 검증
+
+- 확인일:
+- 확인한 근거:
+- 확인하지 못한 항목:

@@ -36,4 +36,5 @@ production 제출 직전 "빠른 검사"가 **등재정보의 기능 묘사가 �
 - 간단한 설명 / 제목에 핵심 동사 · 목표를 직접 서술(모호한 카피 회피).
 
 ## 관련
-- 세션 메모리: `play-prereview-listing-quality-block`
+- 공용 패턴: [[symptom-is-not-root-cause]]
+- 과거 비공유 식별자: `play-prereview-listing-quality-block` (역사 기록, 기준 정보 아님)

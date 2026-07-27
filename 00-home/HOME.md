@@ -1,6 +1,7 @@
 ---
 type: vault-home
-schema_version: 1
+schema_version: 2
+policy_version: 2
 updated: 2026-07-27
 ---
 
@@ -22,6 +23,11 @@ updated: 2026-07-27
 ## 빠른 이동
 
 - [[WRITING-POLICY|작성·승격 정책]]
+- [[VERSION-CONTROL|Vault 버전 관리]]
+- [[POLICY-DISTRIBUTION|공통 정책 배포 규칙]]
+- [[SYNC-BOUNDARIES|AI 간 동기화 범위와 한계]]
+- [[USER-MAINTENANCE|사용자가 직접 기록·갱신할 때]]
+- [[10-inbox/INBOX-REVIEW|Inbox 검토 규칙]]
 - [[VAULT-STATUS|Vault 현재 상태]]
 - [[MIGRATION-MAP|2026-07-27 마이그레이션 매핑]]
 - [[audits/2026-07-27-ai-context-migration-session-report|마이그레이션 종합 검수 보고서]]
@@ -39,7 +45,8 @@ updated: 2026-07-27
 
 1. 프로젝트 저장소에서 `AGENTS.md`와 `docs/ai/NOW.md`를 읽는다.
 2. `git status`, 현재 브랜치, 최근 커밋을 확인한다.
-3. 필요할 때만 이 Vault에서 해당 프로젝트 사건과 공통 패턴을 검색한다.
+3. Vault의 Git 상태와 [[10-inbox/INBOX-REVIEW|Inbox 검토 트리거]]를 확인한다.
+4. 필요할 때만 이 Vault에서 해당 프로젝트 사건과 공통 패턴을 검색한다.
 
 ### 작업 중
 
@@ -60,3 +67,5 @@ updated: 2026-07-27
 - 추정과 확인을 구분한다.
 - 기존 사용자 변경사항을 임의로 덮어쓰지 않는다.
 - 다른 AI와 동시 작업할 때 같은 작업 폴더나 같은 노트를 동시에 수정하지 않는다.
+- 공통 정책은 [[POLICY-DISTRIBUTION]]의 단방향 절차로만 배포한다.
+- 로컬 파일 변경이 진행 중인 다른 AI 대화에 자동 주입된다고 가정하지 않는다.

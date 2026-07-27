@@ -1,19 +1,27 @@
-# Cursor 채팅창용 마이그레이션 프롬프트
+---
+document_type: migration-chat-prompt
+target: cursor
+version: 2
+policy_version: 2
+---
 
-첨부한 `CURSOR-MIGRATION-GUIDE.md`를 전부 읽고 그 문서를 기준으로 현재 Cursor 설정과 열려 있는 프로젝트를 마이그레이션해줘.
+# Cursor 채팅창용 v2 마이그레이션 프롬프트
 
-반드시 다음을 지켜줘.
+첨부한 `CURSOR-MIGRATION-GUIDE.md` v2를 전부 읽고, 그 문서를 최우선 절차로 삼아 Cursor 설정과 현재 프로젝트를 마이그레이션해줘.
 
-1. 기존 Cursor User Rules, `.cursor/rules`, `.cursorrules`, `.cursor/commands`, 루트 `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`를 먼저 조사해.
-2. 프로젝트 파일 변경 전 타임스탬프 백업을 만들어.
-3. 기존 규칙을 덮어쓰거나 중복시키지 말고 공통 규칙과 Cursor 전용 규칙을 분리해.
-4. User Rules를 직접 안전하게 수정할 수 없다면 수정했다고 주장하지 말고, 가이드의 User Rules 블록을 내가 붙여넣을 수 있게 정확히 출력해.
-5. 프로젝트 `AGENTS.md`를 도구 중립적 기준으로 정리하고 `.cursor/rules/shared-context.mdc`를 얇은 어댑터로 구성해.
-6. 기존 문서와 중복되지 않게 `docs/ai/PROJECT.md`, `NOW.md`, `BACKLOG.md`, `decisions/` 구조를 도입해.
-7. 중앙 Vault `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`의 작성 정책·프로필·Git 정책과 프로젝트 카드를 읽고 연결해.
-8. `NOW.md`와 프로젝트 문서는 실제 코드·Git 상태를 조사해 작성하고 모르는 내용을 추측하지 마.
-9. `.cursorrules`는 검토 없이 삭제하지 마.
-10. Push, Pull, Merge, Rebase, 브랜치 삭제, force push, hard reset은 실행하지 마.
-11. 완료 후 백업 위치, 변경 파일, User Rules 반영 상태, 레거시 규칙 처리, 보류 사항, 검증 결과를 표로 보고해.
+먼저 중앙 Vault `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`가 Git 저장소인지, 다른 Cursor 세션이나 AI의 변경과 안전하게 분리되는지 확인해. 이상이 있으면 같은 파일 쓰기를 멈추고 원인을 보고해.
 
-권한이나 UI 제약으로 할 수 없는 작업은 다른 방식으로 처리했다고 가장하지 말고 사용자가 직접 해야 할 정확한 단계로 남겨줘.
+요구사항:
+
+1. User Rules, `.cursor/rules`, `.cursorrules`, `.cursor/commands`, `AGENTS.md`, 다른 AI 규칙과 프로젝트 Git 상태를 먼저 읽어.
+2. 프로젝트 파일 수정 전 타임스탬프 백업을 만들고 기존 규칙을 보존해.
+3. User Rules 관리 블록은 `policy_version 2`로 한 번만 병합해. 직접 수정할 수 없으면 적용했다고 주장하지 말고 정확한 붙여넣기 블록을 출력해.
+4. `AGENTS.md`를 도구 중립적 기준으로 두고 `.cursor/rules/shared-context.mdc`를 얇은 어댑터로 구성해.
+5. 기존 문서와 중복되지 않게 `docs/ai/` 기준 구조를 적용해.
+6. `NOW.md`는 실제 코드·Git·검증 결과로 작성하고 추측은 `확인 필요`로 표시해.
+7. Inbox 검토 트리거와 정책 단방향 배포 규칙을 적용해.
+8. `.cursorrules`를 검토 없이 삭제하지 마.
+9. Push, Pull, Merge, Rebase, 브랜치·태그 삭제, 원격 생성·변경은 실행하지 마.
+10. 완료 후 `50-agent-config/SYNC-STATUS.md`를 실제 결과로 갱신하고 백업·변경 파일·User Rules 상태·Git 상태·검증·보류 항목을 보고해.
+
+UI나 권한 제약으로 못 한 일은 우회했다고 가장하지 말고 사용자가 해야 할 정확한 단계로 남겨줘.

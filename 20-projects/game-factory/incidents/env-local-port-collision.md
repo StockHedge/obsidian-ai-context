@@ -32,4 +32,5 @@ aliases: [로컬 포트 충돌 캐시 혼선, 게임별 포트 분리]
 - 필요 시 하드 리로드 / 캐시 무효화 병행.
 
 ## 관련
-- 세션 메모리: `local-test-ports`
+- 공용 패턴: [[isolate-local-origins-by-project]]
+- 과거 비공유 식별자: `local-test-ports` (역사 기록, 기준 정보 아님)

@@ -1,6 +1,7 @@
 ---
 type: user-profile
-schema_version: 1
+schema_version: 2
+policy_version: 2
 updated: 2026-07-27
 confidence: user-stated
 ---
@@ -26,3 +27,5 @@ confidence: user-stated
 - 확인되지 않은 AI의 추론
 
 프로젝트별 내용은 [[PROJECT-INDEX]]와 각 프로젝트 저장소를 사용한다.
+
+이 문서가 사용자 프로필의 기준이며 AI 내장 메모리나 전역 설정의 복사본보다 우선한다.

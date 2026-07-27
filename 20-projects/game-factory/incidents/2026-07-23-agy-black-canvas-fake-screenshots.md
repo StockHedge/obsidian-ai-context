@@ -72,4 +72,5 @@ Claude 레인에서 실측된 것과 동일 패턴, 독립 audit 단계가 존�
 - 게이트만으로 완성 판정 금지 — 실플레이 확인이 게이트가 못 보는 렌더 결함을 잡는다.
 
 ## 관련
-- 세션 메모리: `agy-lane-setup`
+- 공용 패턴: [[evidence-before-agent-claims]], [[validate-in-target-runtime]]
+- 과거 비공유 식별자: `agy-lane-setup` (역사 기록, 기준 정보 아님)

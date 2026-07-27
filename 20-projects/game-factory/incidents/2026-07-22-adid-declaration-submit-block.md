@@ -40,4 +40,5 @@ Android 13+ 타겟 아티팩트는 이 선언 없이는 출시 불가(정책 게
 - 렌더러 타임아웃 중 좌표 클릭 밀림 주의 — 체크박스는 클릭마다 스크린샷으로 상태 검증.
 
 ## 관련
-- 세션 메모리: `play-prereview-adid-declaration-block`, `new-app-first-production-flow`
+- 공용 패턴: [[symptom-is-not-root-cause]]
+- 과거 비공유 식별자: `play-prereview-adid-declaration-block`, `new-app-first-production-flow` (역사 기록, 기준 정보 아님)

@@ -1,11 +1,12 @@
 ---
 type: project-card
-schema_version: 1
+schema_version: 2
 project_id: game-factory
 project: AI 게임공장
 status: active
 repo_path:
 updated: 2026-07-27
+last_verified: 2026-07-27
 aliases: [AI 게임공장 버그로그, 게임공장 결함 대시보드]
 tags: [game-factory, android, deployment, ai-pipeline]
 ---
@@ -62,4 +63,4 @@ tags: [game-factory, android, deployment, ai-pipeline]
 - [[validate-in-target-runtime]]
 - [[symptom-is-not-root-cause]]
 
-> 과거 노트에 남아 있는 `~/.claude/.../memory/` 식별자는 역사적 참조로만 보존한다. 새 기록은 특정 AI의 로컬 메모리를 기준 정보로 사용하지 않는다.
+과거 특정 AI의 비공유 메모리 식별자는 v2에서 공용 패턴 링크로 정규화했다.

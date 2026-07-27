@@ -35,4 +35,5 @@ Play Console → 사용자 및 권한 → 해당 서비스계정에 **앱 초안
 - 신규 앱 첫 배포 전 서비스계정 권한 프리플라이트 체크를 파이프라인에 추가 검토.
 
 ## 관련
-- 세션 메모리: `play-commit-draft-permission`, `store-launch-blocker-2026-07-22`
+- 공용 패턴: [[symptom-is-not-root-cause]]
+- 과거 비공유 식별자: `play-commit-draft-permission`, `store-launch-blocker-2026-07-22` (역사 기록, 기준 정보 아님)
