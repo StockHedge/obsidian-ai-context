@@ -2,8 +2,8 @@
 document_type: ai-migration-guide
 target: cursor
 version: 2
-policy_version: 2
-date: 2026-07-27
+policy_version: 3
+date: 2026-07-29
 ---
 
 # Cursor 컨텍스트 체계 마이그레이션 가이드 v2
@@ -50,7 +50,7 @@ Cursor Agent가 User Rules를 안전하게 직접 편집할 수 있다고 가정
 
 ```text
 [Shared AI Context Protocol]
-Managed policy version: 2
+Managed policy version: 3
 Canonical source: C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md
 이 관리 블록은 배포본이다. 직접 수정하지 않고 Vault 기준 문서를 먼저 수정한다.
 기본 응답 언어는 한국어다.
@@ -65,9 +65,11 @@ Vault 기록 전 00-home/WRITING-POLICY.md와 10-inbox/INBOX-REVIEW.md를 읽는
 매주 첫 세션, review_by 도래, Inbox 5건 누적, 단계 종료 시 Inbox 검토 필요를 알린다.
 로컬 파일 변경이 다른 진행 중 대화에 자동 주입된다고 가정하지 않는다.
 비밀키, 토큰, 쿠키, 개인정보를 문서와 Git에 기록하지 않는다.
-Git 작업은 40-profile/GIT-POLICY.md를 따른다.
-Push, Pull, Merge, Rebase, 브랜치·태그 삭제, 원격 변경은 사용자 확인 후 실행한다.
+Git 작업은 40-profile/GIT-POLICY.md(policy_version 3)를 따른다.
+작업 브랜치의 로컬 커밋, push, pull --rebase는 사용자 확인 없이 수행한다.
+보호 브랜치(main/master/release/*/prod) push, merge, 수동 rebase, cherry-pick, 브랜치·태그 삭제, 원격 저장소 생성·변경, public 저장소 push는 사용자 확인 후 실행한다.
 Force push와 광범위한 변경 폐기는 금지한다.
+세션은 대체로 정상 종료되지 않는다. "세션 종료 시 정리한다"에 의존하는 규칙은 설계하지 않는다.
 [/Shared AI Context Protocol]
 ```
 
@@ -128,7 +130,7 @@ Before a material handoff:
 ## 5단계: 검증과 배포 기록
 
 1. 백업과 프로젝트 diff를 확인한다.
-2. User Rules의 관리 블록이 한 번이고 `Managed policy version: 2`인지 확인한다.
+2. User Rules의 관리 블록이 한 번이고 `Managed policy version: 3`인지 확인한다.
 3. `.cursor/rules/shared-context.mdc`가 Cursor Rules에 표시되는지 확인한다.
 4. 새 Agent 채팅에서 `AGENTS.md`, `NOW.md`, Git 정책을 확인한다.
 5. `.cursorrules`와 새 Rules의 충돌, 링크, 비밀정보를 검사한다.

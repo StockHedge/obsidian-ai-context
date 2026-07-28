@@ -2,8 +2,8 @@
 document_type: ai-migration-guide
 target: claude-code
 version: 2
-policy_version: 2
-date: 2026-07-27
+policy_version: 3
+date: 2026-07-29
 ---
 
 # Claude Code 컨텍스트 체계 마이그레이션 가이드 v2
@@ -51,7 +51,7 @@ Vault가 Git 저장소가 아니거나 변경 충돌의 소유권을 구분할 �
 <!-- shared-ai-context:start -->
 # Shared AI Context Protocol
 
-- Managed policy version: 2
+- Managed policy version: 3
 - Canonical source: `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md`
 - 이 관리 블록은 배포본이다. 직접 수정하지 않고 Vault 기준 문서를 먼저 수정한다.
 - 기본 응답 언어는 한국어다.
@@ -66,9 +66,17 @@ Vault가 Git 저장소가 아니거나 변경 충돌의 소유권을 구분할 �
 - 매주 첫 세션, review_by 도래, Inbox 5건 누적, 단계 종료 시 Inbox 검토 필요를 알린다.
 - 로컬 파일 변경이 다른 진행 중 대화에 자동 주입된다고 가정하지 않는다.
 - 비밀키, 토큰, 쿠키, 개인정보를 문서와 Git에 기록하지 않는다.
-- Git 작업은 `40-profile/GIT-POLICY.md`를 따른다.
-- Push, Pull, Merge, Rebase, 브랜치·태그 삭제, 원격 변경은 사용자 확인 후 실행한다.
-- Force push와 광범위한 변경 폐기는 금지한다.
+- Git 작업은 `40-profile/GIT-POLICY.md`(policy_version 3)를 따른다.
+- 작업 브랜치의 로컬 커밋, `push`, `pull --rebase`는 사용자 확인 없이 수행한다.
+  사용자는 Git 명령을 직접 실행하지 않으므로 확인 요구는 미푸시 누적으로만 귀결된다.
+- 보호 브랜치(`main`/`master`/`release/*`/`prod`) push, merge, 수동 rebase, cherry-pick,
+  브랜치·태그 삭제, 원격 저장소 생성·변경, public 저장소 push는 사용자 확인 후 실행한다.
+- Force push와 광범위한 변경 폐기는 금지한다. 훅에도 동일하게 적용된다.
+- 준수는 지시가 아니라 훅으로 강제한다. Stop 훅 `git-autosync.ps1`이 `.git/autosync`
+  마커가 있는 저장소에서 조건부 자동 커밋·푸시를 수행하고, SessionStart 훅
+  `git-session-start.ps1`이 fetch 후 실제 Git 상태를 컨텍스트에 주입한다.
+- 세션은 대체로 정상 종료되지 않는다(창 닫기, 크래시, 컨텍스트 압축).
+  "세션 종료 시 정리한다"에 의존하는 규칙은 설계하지 않는다.
 <!-- shared-ai-context:end -->
 ```
 

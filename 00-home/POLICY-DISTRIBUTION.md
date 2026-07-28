@@ -1,8 +1,8 @@
 ---
 type: operating-policy
 schema_version: 2
-policy_version: 2
-updated: 2026-07-27
+policy_version: 3
+updated: 2026-07-29
 ---
 
 # 공통 정책 배포 규칙
