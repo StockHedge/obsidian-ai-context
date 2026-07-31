@@ -18,7 +18,7 @@ tags: [migration, cursor, policy-v2]
 - 중복 id `16992532` 제거.
 - embolos에 `AGENTS.md`, `.cursor/rules/shared-context.mdc`, `docs/ai/*` 신설.
 - `ops.test.embolos.kr/health` → HTTP 200.
-- `test.embolos.kr/health` → 8s 타임아웃 (미해소).
+- `test.embolos.kr/health` → 8s 타임아웃. **2026-07-27 재측정에서 200/0.19s — 콜드스타트로 확인, 해소.**
 
 ## 승격 후보
 
@@ -28,4 +28,4 @@ tags: [migration, cursor, policy-v2]
 
 ## 비고
 
-기존 `2026-07-27-embolos-migration-handoff.md`는 제품 이관용이며, AI Context v2 적용만으로 자동 삭제하지 않음.
+기존 `2026-07-27-embolos-migration-handoff.md`와 포인터 노트는 제품 이관 전용이었고, 2026-07-27 Claude Code 인수 세션에서 컨텍스트 복원·상시 문서 흡수를 마친 뒤 해당 문서의 §12 지시에 따라 삭제됨. 영구 내용은 repo `docs/ai/NOW.md`·`docs/ai/BACKLOG.md`·`docs/ai_company_ops.md`와 [[2026-07-26-ai-company-ops-console]]에 있다.

@@ -5,7 +5,7 @@ project: embolos
 component: checkout / storage / admin / reservations-public
 category: security-review
 severity: high
-status: monitoring
+status: resolved
 root_cause_status: confirmed
 discovered: 2026-07-31
 resolved: 2026-07-31
@@ -141,7 +141,7 @@ cross-site 하위리소스라 쿠키가 실리지 않는다 → 로그인 화면
 
 ## 수정
 
-**Phase A(확정 5건 중 4건) 2026-07-31 수정 완료 · 커밋 `1af805b`~`ce0f8c1`.**
+**Phase A 확정 5건 전량 2026-07-31 수정 완료 · 커밋 `1af805b`~`ce0f8c1` + 발견 3(아래).**
 
 | 발견 | 커밋 | 조치 |
 |---|---|---|
@@ -150,12 +150,22 @@ cross-site 하위리소스라 쿠키가 실리지 않는다 → 로그인 화면
 | 4. 예약 코드 24비트 | `6a2651b` | `token_hex(8)`(64비트). String(32)에 24자라 마이그레이션 불요, 구 코드 조회 하위호환 유지 |
 | 5. 역할 회수 우회 | `ce0f8c1` | 파괴적 4라우트에 `require_admin(minimum="operator")` + UI 억제 |
 
-**미조치 1건**: 발견 3(할인코드 발행 상한 reserve-at-place). 착수 전 조사에서
-`discount_offer_redemptions`에 unique 제약이 없어(0059는 인덱스만) 원장 기반 정식 예약은
-마이그레이션이 선행돼야 함을 확인했다 — T2에서 은퇴시킬 테이블에 스키마를 더하는 셈이라
-`orders.discount_offer_id` 기반 "살아있는 주문 카운트"(paid + 30분 내 unpaid) 대안으로
-전환 검토 중. 마이그레이션·예약 테이블 없이 순차 공격을 차단하고 `FOR UPDATE`로 동시
-경합까지 직렬화된다.
+**발견 3(할인코드 발행 상한) 2026-07-31 수정 완료 — 마이그레이션 없이 정식 예약으로.**
+
+착수 전 판단("unique 제약이 없어 원장 예약은 마이그레이션 선행")은 **틀렸다**. 제약이
+필요했던 이유는 예약 자체가 아니라 *예약 행에 status를 달아 paid와 구분하려는* 설계
+전제였는데, 쿠폰이 이미 그 전제 없이 같은 문제를 풀고 있었다 — `used_count`의 의미를
+"예약 + 결제완료"로 두면 status 컬럼도 새 테이블도 필요 없다. 형제 경로를 먼저 읽었으면
+대안 설계(살아있는 주문 카운트)를 검토할 이유도 없었다.
+
+채택: `reserve_discount_offer(conn, order_id=...)`를 `loyalty.py`의 redeem 옆에 신설.
+오퍼 행 `FOR UPDATE` → stale 해제(미결제 30분·오버셀 미이행) → 원장 집계 → 한도 재검증 →
+예약 삽입 + `redemption_count` 재동기. `create_pending_order`가 쿠폰·혜택과 같은 지점에서
+호출하고 실패 시 `_DiscountUnavailable`로 savepoint 전체 롤백(SSR 409 재렌더 / API 409).
+
+배포 경계도 닫았다: `redeem_discount_offer_for_order`는 예약 행이 있으면 no-op이지만
+없으면 기존대로 삽입·증가하므로, **배포 순간 떠 있던 미결제 주문**이 뒤늦게 결제돼도
+한도가 새지 않는다. 코드 변경 없이 기존 멱등 가드가 그대로 폴백이 된다.
 
 **부수 수정**: 혜택 엔진의 `check_usage_limits`(게스트를 적용 가능으로 판정)와
 `reserve_benefits`(fail-closed 거부)가 어긋나 "할인 표시 후 결제 409"가 되는 구조를
@@ -169,6 +179,16 @@ cross-site 하위리소스라 쿠키가 실리지 않는다 → 로그인 화면
 전부 low. 표적·파급 테스트 100 passed(스토리지 회수·특성화·예약 공개/콘솔·혜택 배선·상품
 API·오버셀·shop API·라우트 스냅샷). 리뷰어가 잡은 커밋 전 조치 1건(예약번호 placeholder가
 구 6자리 예시 노출)은 같은 커밋에서 반영.
+
+**발견 3 검증(2026-07-31)**: 신규 회귀 7건(예약 기록·상한 롤백·게스트 fail-closed·1인
+한도가 전체로 번지지 않음·paid 이중 계상 금지·구주문 폴백·stale 회수). **게이트를 한 줄
+비활성화하고 재실행해 6/7이 실패하는 것을 확인**한 뒤 복구했다 — 통과만 보고 넘어가면
+게이트를 짚지 않는 테스트를 회귀 방어로 착각한다. 혜택 배선 6건·라우트 스냅샷 무회귀.
+
+**남은 갭(보안 아님, 기록만)**: 할인코드는 **환불·취소 시 발행 한도를 복원하지 않는다.**
+수정 전에도 그랬으므로 회귀는 아니지만, 이제 원장이 place 시점에 쌓이는 만큼 "환불했는데
+코드가 안 돌아온다"는 문의가 생길 수 있다. 쿠폰·0064 혜택에는 복원 경로가 있다 —
+이 비대칭은 T2(구세대 이관)에서 해소하는 것이 맞다.
 
 **미해결로 남긴 것**: 관리자 라우트 회귀 테스트. `backend/tests`에 관리자 세션 픽스처
 관례가 0건이고(Redis 서버 세션 + 서명 쿠키 + `require_platform_host` + 요청마다 DB

@@ -7,9 +7,9 @@ status: active
 repo_path: C:\Users\jihon\projects\embolos
 branch: legal-kakaopay-2026-07
 head_commit: 459a5c0
-updated: 2026-07-27
+updated: 2026-07-28
 last_verified: 2026-07-27
-agents: [cursor, codex]
+agents: [cursor, codex, claude-code]
 tags: [embolos, multi-tenant-saas, ops, billing]
 ---
 
@@ -56,7 +56,8 @@ tags: [embolos, multi-tenant-saas, ops, billing]
 
 - 최신 확인 커밋 `459a5c0`은 별도 AI Company Ops 콘솔, 제어면, Things 제품면 작업을 포함한다.
 - `docs/ai_company_ops.md`와 [[2026-07-26-ai-company-ops-console]]에 따르면 test Ops 배포와 S1~S3 범위가 구현됐다.
-- 작업 트리에 `docs.zip`과 `docs/handoff/`가 추적되지 않은 상태로 남아 있다. 검토 전 임의 커밋·삭제하지 않는다.
+- 작업 트리 미추적(2026-07-27 실측): `.cursor/`, `AGENTS.md`, `docs/ai/`, `docs/handoff/`. `docs.zip`은 더 이상 없다. 검토 전 임의 커밋·삭제하지 않는다.
+- test는 api·Ops 모두 응답하지만, **prod Ops는 미배포**다. Fly `embolos-ops` = pending, prod api에 `OPS_BASE_URL` 없음·`/internal/ops/*` 404.
 
 ### 문서상 남은 트랙
 
@@ -65,7 +66,8 @@ tags: [embolos, multi-tenant-saas, ops, billing]
 - 광고 대안 검토
 - 만료 테넌트 purge 활성화 전 운영 조건 확인
 - 카카오페이 CID와 OAuth 콜백 등 외부 콘솔 의존 작업
-- Ops prod 배포 상태, W5·W7 후속의 최신 재검증
+- Ops prod 승격(시크릿·DNS·배포) — 절차는 repo `docs/ai_company_ops.md`의 "prod 승격 절차"
+- Ops W5(외부 API 실패율)·W7(보안 시그널) 후속
 
 이 목록은 여러 시점의 문서에서 모은 후보이며 다음 작업 시작 때 코드·Git·외부 환경으로 다시 확인한다.
 
@@ -76,6 +78,8 @@ tags: [embolos, multi-tenant-saas, ops, billing]
 ## 주요 마일스톤
 
 - [[2026-07-26-ai-company-ops-console|AI Company Ops Console 구현·test 검증]]
+- [[milestones/2026-07-28-beta-acquisition-kit|핸드메이드·리빙 5인 베타 모집 기반]] — 로컬 테스트·브라우저 검증 완료, 배포 전 보안·실DB 확인 대기
+- [[milestones/2026-07-28-beta-tester-operations-playbook|베타테스터 실무 플레이북]] — 모집·선발·4주 운영·보상·출시 판단을 하나의 실행 흐름으로 정리
 
 ## 관련 공통 패턴
 
@@ -84,9 +88,10 @@ tags: [embolos, multi-tenant-saas, ops, billing]
 
 ## 마지막 검증
 
-- 확인일: 2026-07-27
-- 확인한 근거: 저장소 Git 상태·브랜치·최근 커밋, `README.md`, `docs/ai_company_ops.md`, 앱 계획, 오케스트레이션 문서
-- 확인한 작업 트리: `docs.zip`, `docs/handoff/` 미추적
-- 확인하지 못한 항목: 운영 서비스의 현재 배포 상태, 외부 콘솔 설정, 실제 결제·OAuth 상태
-- 임시 Vault 인계: [[2026-07-27-embolos-migration-handoff]]
-- 다음 구조 작업: 프로젝트 저장소에 `AGENTS.md`와 `docs/ai/NOW.md`를 도입한 뒤 임시 Inbox 인계를 정리
+- 확인일: 2026-07-27 (Claude Code 인수 세션)
+- 확인한 근거: Git 실측(브랜치·HEAD·porcelain·원격 동기 0/0), `curl` 헬스체크 5종, `flyctl apps list`, `flyctl config env -a embolos-api`
+- 배포 실측: test api·Ops 200 / prod api 200 / **prod Ops 무응답·`embolos-ops` pending**
+- 이전 미해결이던 `test.embolos.kr/health` 타임아웃은 콜드스타트로 확인(200, 0.19s)
+- 확인하지 못한 항목: 외부 콘솔 설정(Cloudflare·카카오페이·OAuth), test 배포본과 HEAD의 동일성(배포 7/25 < 커밋 7/27)
+- 임시 Vault 인계: 이관 완료로 2026-07-27 삭제됨 (내용은 repo `docs/ai/`·`docs/ai_company_ops.md`로 흡수)
+- 상시 기준: repo `docs/ai/NOW.md` · `docs/ai/BACKLOG.md` · `AGENTS.md`
