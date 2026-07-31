@@ -5,10 +5,10 @@ project: embolos
 component: checkout / storage / admin / reservations-public
 category: security-review
 severity: high
-status: active
+status: monitoring
 root_cause_status: confirmed
 discovered: 2026-07-31
-resolved:
+resolved: 2026-07-31
 verified: 2026-07-31
 agents: [claude-code]
 source_repo: StockHedge/embolos
@@ -139,9 +139,41 @@ cross-site 하위리소스라 쿠키가 실리지 않는다 → 로그인 화면
 
 ## 수정
 
-미착수. 조치 순서와 담당은 `docs/ai/NOW.md`에 둔다.
+**Phase A(확정 5건 중 4건) 2026-07-31 수정 완료 · 커밋 `1af805b`~`ce0f8c1`.**
+
+| 발견 | 커밋 | 조치 |
+|---|---|---|
+| 1. R2 교차 테넌트 삭제 (HIGH) | `1af805b` | `_r2_key_from_url(url, tenant_id)`로 `products/{tenant_id}/` 대조, `delete_images`를 keyword-only 승격(위치인자면 기존 호출이 조용히 통과), 호출부 4곳이 **등록 시점**에 캡처 전달 |
+| 2. 할인코드 게스트 fail-open | `c4ef9f9` | 헬퍼 **내부**에서 거부 — 두 호출자(SSR·앱 API) 동시 커버 |
+| 4. 예약 코드 24비트 | `6a2651b` | `token_hex(8)`(64비트). String(32)에 24자라 마이그레이션 불요, 구 코드 조회 하위호환 유지 |
+| 5. 역할 회수 우회 | `ce0f8c1` | 파괴적 4라우트에 `require_admin(minimum="operator")` + UI 억제 |
+
+**미조치 1건**: 발견 3(할인코드 발행 상한 reserve-at-place). 착수 전 조사에서
+`discount_offer_redemptions`에 unique 제약이 없어(0059는 인덱스만) 원장 기반 정식 예약은
+마이그레이션이 선행돼야 함을 확인했다 — T2에서 은퇴시킬 테이블에 스키마를 더하는 셈이라
+`orders.discount_offer_id` 기반 "살아있는 주문 카운트"(paid + 30분 내 unpaid) 대안으로
+전환 검토 중. 마이그레이션·예약 테이블 없이 순차 공격을 차단하고 `FOR UPDATE`로 동시
+경합까지 직렬화된다.
+
+**부수 수정**: 혜택 엔진의 `check_usage_limits`(게스트를 적용 가능으로 판정)와
+`reserve_benefits`(fail-closed 거부)가 어긋나 "할인 표시 후 결제 409"가 되는 구조를
+`load_active_rules`에서 닫았다(`64234f1`). 보안 발견은 아니나 엔진이 스스로 내건
+"표시 금액 = 청구 금액" 계약 위반이었고, 혜택 빌더가 그 필드를 여는 순간 활성화될 상태였다.
 
 ## 검증 결과
+
+**수정 검증(2026-07-31)**: 구현 4건에 각각 읽기 전용 보안 리뷰어를 붙여 "취약점이 실제로
+닫혔는지"를 보고가 아니라 코드로 재확인 — 4건 모두 `vuln_closed`, 잔여 우회 0, 회귀 위험
+전부 low. 표적·파급 테스트 100 passed(스토리지 회수·특성화·예약 공개/콘솔·혜택 배선·상품
+API·오버셀·shop API·라우트 스냅샷). 리뷰어가 잡은 커밋 전 조치 1건(예약번호 placeholder가
+구 6자리 예시 노출)은 같은 커밋에서 반영.
+
+**미해결로 남긴 것**: 관리자 라우트 회귀 테스트. `backend/tests`에 관리자 세션 픽스처
+관례가 0건이고(Redis 서버 세션 + 서명 쿠키 + `require_platform_host` + 요청마다 DB
+재검증의 3중 전제), 잘못 흉내 낸 픽스처는 403/404를 "게이트 통과"로 오독하게 만들어
+같은 회귀를 다시 놓친다. `tests/_admin.py` 공용 헬퍼를 먼저 세우는 별도 작업으로 분리.
+
+---
 
 발견 5건 전부 2렌즈 반증 통과(확신 8~9/10), 반증 2건은 확신 1~3으로 탈락.
 음성 확인된 표면(증거로 남김):
