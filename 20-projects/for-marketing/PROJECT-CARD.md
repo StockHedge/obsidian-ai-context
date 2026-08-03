@@ -6,7 +6,7 @@ status: active
 repo_path: C:\Users\강지호\project\for-marketing
 remote_url: (없음 — 로컬 전용, 원격 생성은 사용자 결정 대기)
 branch: main
-head_commit: 874aaff
+head_commit: 9034e75
 updated: 2026-08-04
 last_verified: 2026-08-04
 agents: [claude-code]
@@ -47,8 +47,9 @@ aiwebbuilder·embolos 두 플랫폼의 마케팅(수집→생성→게이트→�
 
 ## 현재 단계
 
-P0~P8 구축 완료(2026-08-04), P9(2주 관측 운영 전환 + 전체 코드 리뷰) 대기.
-로컬 실연동 검증 완료 — 배포(Fly/Neon/Upstash 프로비저닝)는 미실시.
+**P0~P9 전 페이즈 완료(2026-08-04)** — 멀티에이전트 전체 리뷰(확정 20건 전량 수정) 포함.
+pytest 510/프론트 58 그린. 남은 것은 전부 외부 의존(배포·Meta 토큰·실데이터 시드) —
+상세는 저장소 `docs/ai/NOW.md`.
 
 대기 중 사용자 액션: Meta 페이지 토큰(P7~P8 live 전환), YOUTUBE_API_KEY·META_APP_ID/SECRET(실수집),
 core 해시태그·경쟁 계정 목록, 발신 서브도메인 DNS(대량 발송 전), DoD ⑤ 실도달(발송창 내 재실행).
