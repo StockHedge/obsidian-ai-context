@@ -10,6 +10,14 @@
 .obsidian/plugins/*/data.json
 # !.obsidian/plugins/<plugin-id>/data.json
 
+# 2026-08-09 해제: obsidian-git. 두 기기의 동기화 정책이 갈리면 안 되므로 공유한다.
+#   해제 전 확인 — 파일 전수 검토 결과 apiKey·토큰·개인키 없음.
+#   {{hostname}}(기기 식별자)은 이 파일이 아니라 기기 localStorage에 저장되므로
+#   공유해도 기기 정체성은 유지된다.
+#   주의 — basePath·gitDir는 기기별 경로 필드다. 현재 양쪽 모두 빈 값이며,
+#   한쪽이 값을 넣으면 다른 기기가 깨지므로 비워 둔 상태를 유지할 것.
+!.obsidian/plugins/obsidian-git/data.json
+
 # ── Obsidian 로컬 삭제함 / 복구 파일 ──
 .trash/
 
