@@ -1,8 +1,8 @@
 ---
 type: operating-policy
 schema_version: 2
-policy_version: 3
-updated: 2026-07-29
+policy_version: 4
+updated: 2026-08-09
 ---
 
 # 공통 정책 배포 규칙
@@ -41,4 +41,3 @@ updated: 2026-07-29
 - 실제 전역 설정에만 존재하는 공통 정책은 기준 문서에 검토 제안으로 올린 뒤 채택 여부를 결정한다.
 - 프로젝트별 규칙은 전역 설정이나 `40-profile/`로 승격하지 않는다.
 - 자동으로 기존 사용자 규칙을 삭제하거나 전체 파일을 덮어쓰지 않는다.
-

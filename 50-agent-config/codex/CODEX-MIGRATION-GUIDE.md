@@ -2,8 +2,8 @@
 document_type: ai-migration-guide
 target: codex
 version: 2
-policy_version: 3
-date: 2026-07-29
+policy_version: 4
+date: 2026-08-09
 ---
 
 # Codex 컨텍스트 체계 마이그레이션 가이드 v2
@@ -16,7 +16,7 @@ Codex의 한 대화나 메모리 대신 계층적 `AGENTS.md`, 프로젝트 `doc
 
 Vault 경로:
 
-`C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+`%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
 
 1. Vault가 로컬 Git 저장소인지 확인한다.
 2. 현재 브랜치와 변경 파일을 확인한다.
@@ -28,9 +28,9 @@ Vault 경로:
 
 ## Codex 설정 표면
 
-- 전역 지침: `C:\Users\jihon\.codex\AGENTS.md`
+- 전역 지침: `%USERPROFILE%\.codex\AGENTS.md`
 - 프로젝트 지침: 저장소 루트와 하위 경로의 `AGENTS.md`
-- 개인 설정: `C:\Users\jihon\.codex\config.toml`
+- 개인 설정: `%USERPROFILE%\.codex\config.toml`
 - 프로젝트 설정: `.codex/config.toml`
 - 더 가까운 하위 `AGENTS.md`가 해당 하위 트리에 구체적으로 적용됨
 
@@ -52,22 +52,32 @@ Vault 경로:
 <!-- shared-ai-context:start -->
 # Shared AI Context Protocol
 
-- Managed policy version: 3
-- Canonical source: `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md`
+- Managed policy version: 4
+- Canonical source: `%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md`
 - 이 관리 블록은 배포본이다. 직접 수정하지 않고 Vault 기준 문서를 먼저 수정한다.
 - 기본 응답 언어는 한국어다.
 - 작업 시작·재개 시 프로젝트 지침, `docs/ai/NOW.md`, Git 상태, 기존 미커밋 변경을 다시 확인한다.
 - 코드, Git diff, 테스트와 실환경 증거를 이전 대화·메모리·AI 자기평가보다 우선한다.
 - 다른 AI나 사용자의 변경을 임의로 덮어쓰지 않는다.
 - 현재 인계는 프로젝트 `docs/ai/NOW.md`에 100줄 이하로 유지한다.
-- 프로젝트별 사실은 전역 지침이나 Claude 자동 메모리에 저장하지 않는다.
-- 중앙 Vault는 `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`이다.
+- 프로젝트별 사실은 전역 지침이나 Codex 메모리에 저장하지 않는다.
+- 중앙 Vault는 `%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING` 하나뿐이다.
+  기기마다 사용자 프로필명이 다르므로(`jihon` / `강지호`) 절대경로를 하드코딩하지 않는다.
+  구 `Documents\Obsidian Vault`와 노트북 구 `Obsidian Vault`는 2026-08-09 통합 후 폐기
+  대상이며 기준으로 참조하지 않는다.
+- Vault 원격은 GitHub Private `StockHedge/obsidian-ai-context`이고, 기기 간 동기화는
+  Obsidian Git 플러그인이 담당한다. 절차는 `00-home/VAULT-SYNC.md`를 따른다.
+- Vault 저장소에는 `.git/autosync` 마커를 만들지 않는다. 이 저장소의 자동 커밋 주체는
+  Obsidian Git 단독이며, Stop 훅과 겹치면 `index.lock` 경합과 부분 커밋이 발생한다.
+- Vault의 파일·폴더명을 임의로 바꾸지 않는다. 첨부와 MOC가 `[[파일명]]` 최단 형식
+  링크를 쓰므로 이름 변경은 링크를 끊는다. 변경은 링크 재작성과 한 작업으로만 한다.
+- 한글 경로 대응으로 `core.quotepath false`, `core.longpaths true`를 전역에 둔다.
 - Vault 기록 전 `00-home/WRITING-POLICY.md`와 `10-inbox/INBOX-REVIEW.md`를 읽는다.
 - 검증된 중요 사건과 재사용 가능한 교훈만 Vault에 승격한다.
 - 매주 첫 세션, review_by 도래, Inbox 5건 누적, 단계 종료 시 Inbox 검토 필요를 알린다.
 - 로컬 파일 변경이 다른 진행 중 대화에 자동 주입된다고 가정하지 않는다.
 - 비밀키, 토큰, 쿠키, 개인정보를 문서와 Git에 기록하지 않는다.
-- Git 작업은 `40-profile/GIT-POLICY.md`(policy_version 3)를 따른다.
+- Git 작업은 `40-profile/GIT-POLICY.md`(policy_version 4)를 따른다.
 - 작업 브랜치의 로컬 커밋, `push`, `pull --rebase`는 사용자 확인 없이 수행한다.
   사용자는 Git 명령을 직접 실행하지 않으므로 확인 요구는 미푸시 누적으로만 귀결된다.
 - 보호 브랜치(`main`/`master`/`release/*`/`prod`) push, merge, 수동 rebase, cherry-pick,
@@ -76,8 +86,7 @@ Vault 경로:
 - 준수는 지시가 아니라 훅으로 강제한다. Stop 훅 `git-autosync.ps1`이 `.git/autosync`
   마커가 있는 저장소에서 조건부 자동 커밋·푸시를 수행하고, SessionStart 훅
   `git-session-start.ps1`이 fetch 후 실제 Git 상태를 컨텍스트에 주입한다.
-- 세션은 대체로 정상 종료되지 않는다(창 닫기, 크래시, 컨텍스트 압축).
-  "세션 종료 시 정리한다"에 의존하는 규칙은 설계하지 않는다.
+- 세션은 대체로 정상 종료되지 않는다. 세션 종료 시 정리한다는 규칙에 의존하지 않는다.
 <!-- shared-ai-context:end -->
 ```
 
@@ -126,7 +135,7 @@ project/
 ## 5단계: 검증과 배포 기록
 
 1. 백업과 변경 diff를 확인한다.
-2. 관리 블록이 정확히 한 번 있고 `Managed policy version: 2`인지 확인한다.
+2. 관리 블록이 정확히 한 번 있고 `Managed policy version: 4`인지 확인한다.
 3. 새 Codex 작업에서 적용되는 `AGENTS.md`, `NOW.md`, Git 정책을 확인한다.
 4. 링크, 경로, 중복 규칙, 비밀정보를 검사한다.
 5. 실제 명령을 실행할 수 있으면 문서의 테스트·lint 명령을 검증한다.

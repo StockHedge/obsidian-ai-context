@@ -11,9 +11,43 @@ updated: 2026-08-09
 |---|---:|---:|---|---|
 | Claude Code (PC) | 4 | 4 | 반영됨 (policy_version 4, 관리 블록 1회, Stop·SessionStart 훅 등록) | 2026-08-09 |
 | Claude Code (노트북) | 4 | 4 | **재배포 대상** — `claude-dotfiles` pull 후 확인 필요 | 2026-08-09 |
-| Codex | 4 | 4 | **재배포 대상** (실제 설정 policy_version 2) | 2026-07-29 |
+| Codex | 4 | 4 | 반영됨 (policy_version 4, Claude Code 전역 구성 Codex 형식 이식) | 2026-08-09 |
 | Cursor User Rules | 4 | 4 | **재배포 대상** (실제 설정 policy_version 2, UI 수동 갱신 필요) | 2026-07-29 |
 | Cursor 전역 폴더 (`~/.cursor`) | 4 | 4 | **재배포 대상** (`shared-context.mdc` 미갱신) | 2026-07-29 |
+
+## Codex v4 + Claude Code 전역 구성 이식 기록 (2026-08-09)
+
+- 실제 설정: `%USERPROFILE%\.codex`
+- 관리 블록: policy_version 2 → 4. 사용자 프로필 독립 경로, Vault 단일 기준,
+  Git policy v4와 자동화 소유권을 반영했다.
+- 기존 Codex 설정 보존
+  - 모델 `gpt-5.6-sol`, reasoning `xhigh`, 한국어 UI, 설치 플러그인,
+    node_repl MCP, 프로젝트 trust 기록은 유지했다.
+  - 추가: `personality = "pragmatic"`, hooks·multi-agent 활성화,
+    subagent 기본 `gpt-5.6-terra/high`, 동시 subagent 3개.
+- Claude Code에서 이식·변환
+  - 사용자 스킬 10개와 각 `agents/openai.yaml`
+  - custom agent 9개(리뷰·보안·성능·접근성·마이그레이션·가설·리서치)
+  - lifecycle hook 4개(SessionStart, PostToolUse, SubagentStop, Stop)
+  - 리서치 보조 스크립트 4개, 전역 디자인 규율과 DESIGN.md 템플릿
+  - MCP 6개(Render, Obsidian, Tavily, Cloudflare, Neon, Fly). 비밀값은 출력하지 않았고
+    로컬 Codex config에만 보존했다. MCP 쓰기 도구는 기본 `writes` 승인 모드다.
+  - Git force push와 `reset --hard` 금지 규칙을 user exec policy에 추가했다.
+- Claude 전용이라 직접 이식하지 않은 항목
+  - Claude 상태줄과 UI 실험·캐시·세션·프로젝트 히스토리
+  - TaskCompleted/TeammateIdle 훅(현재 Codex 이벤트 없음; 기존 완료 알림 사용)
+  - Claude 공식 플러그인 자체(기능은 Codex 내장·기존 플러그인·전역 스킬로 대응)
+- 백업: `%USERPROFILE%\.codex\backups\claude-parity-20260809-185217\`
+  (기존 AGENTS.md, config.toml, rules 및 Vault 수정 전 3개 파일의 exact base64 사본)
+- 검증
+  - 10개 스킬 quick_validate 통과
+  - config.toml·custom agent TOML 10개 파싱 통과
+  - hooks.json JSON 파싱, PowerShell 3개 구문 검사, Python 4개 AST 파싱 통과
+  - hook 샘플 계약: SessionStart context JSON, formatter, autosync no-op,
+    research guard allow/block, SubagentStop JSON 모두 기대대로 동작
+  - MCP 원본·이식 설정의 URL/command/args/env/header 값 일치 확인, stdio 명령 `uvx`·`fly` 실존
+- 적용을 위해 새 Codex 작업 또는 앱 재시작이 필요하다. non-managed hook은 첫 로드 시
+  사용자가 해시를 검토·신뢰해야 하며, OAuth MCP는 서버가 요구하면 다시 인증한다.
 
 ## v4 배포 기록 — Claude Code / PC (2026-08-09)
 
