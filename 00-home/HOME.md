@@ -27,6 +27,7 @@ updated: 2026-08-09
 - [[POLICY-DISTRIBUTION|공통 정책 배포 규칙]]
 - [[SYNC-BOUNDARIES|AI 간 동기화 범위와 한계]]
 - [[VAULT-SYNC|기기 간 동기화 운용 규칙]]
+- [[LAPTOP-SETUP|노트북 초기 설정 절차]]
 - [[USER-MAINTENANCE|사용자가 직접 기록·갱신할 때]]
 - [[10-inbox/INBOX-REVIEW|Inbox 검토 규칙]]
 - [[VAULT-STATUS|Vault 현재 상태]]
