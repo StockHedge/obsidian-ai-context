@@ -1,3 +1,21 @@
-* text=auto
-*.md text eol=lf
-*.json text eol=lf
+* text=auto eol=lf
+
+*.md      text eol=lf
+*.json    text eol=lf
+*.canvas  text eol=lf
+*.css     text eol=lf
+*.js      text eol=lf
+*.svg     text eol=lf
+*.ps1     text eol=crlf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.pdf  binary
+*.zip  binary
+*.mp4  binary
+*.mp3  binary
+*.woff  binary
+*.woff2 binary

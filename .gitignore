@@ -1,16 +1,27 @@
-# Obsidian's volatile per-window state
+# ── Obsidian: 기기마다 달라지는 휘발성 상태 ──
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/workspace*.json
 .obsidian/cache/
 
-# Local trash and OS metadata
-.trash/
-Thumbs.db
-.DS_Store
+# ── 비밀값: 플러그인 설정은 "기본 차단 → 안전 확인된 것만 해제" ──
+# 근거: obsidian-local-rest-api/data.json 에 apiKey + RSA PRIVATE KEY 평문이 들어간다.
+# 공유하려는 플러그인만 아래처럼 개별 해제할 것. 해제 전 반드시 파일 내용을 확인한다.
+.obsidian/plugins/*/data.json
+# !.obsidian/plugins/<plugin-id>/data.json
 
-# Temporary and editor files
+# ── Obsidian 로컬 삭제함 / 복구 파일 ──
+.trash/
+
+# ── OS·편집기 부산물 ──
+.DS_Store
+Thumbs.db
+desktop.ini
 *.tmp
 *.temp
 *.bak
 *~
+
+# ── 다른 동기화 도구 병행 시 잔재 ──
+.stversions/
+.stfolder/
