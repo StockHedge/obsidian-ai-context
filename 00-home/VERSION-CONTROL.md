@@ -2,7 +2,7 @@
 type: operating-policy
 schema_version: 2
 policy_version: 2
-updated: 2026-07-27
+updated: 2026-08-09
 ---
 
 # Vault 버전 관리
@@ -12,8 +12,10 @@ updated: 2026-07-27
 - 이 Vault는 2026-07-27부터 로컬 Git 저장소로 관리한다.
 - 기본 브랜치: `main`
 - v1 기준선 커밋: `877862c`
-- 원격 저장소: 연결하지 않음
-- Push·Pull·원격 생성은 사용자의 명시적 승인 전에는 수행하지 않는다.
+- 원격 저장소: `StockHedge/obsidian-ai-context` (GitHub Private, 2026-08-09 연결, 사용자 승인)
+- 원격 생성·변경은 여전히 사용자의 명시적 승인 대상이다. 일상 Push·Pull은 [[VAULT-SYNC]]의
+  절차를 따른다.
+- 기기 간 동기화 절차와 자동화 소유권은 [[VAULT-SYNC]]가 기준이다.
 
 ## 작업 시작 전
 

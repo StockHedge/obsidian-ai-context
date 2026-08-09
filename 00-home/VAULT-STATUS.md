@@ -2,7 +2,7 @@
 type: vault-status
 schema_version: 2
 policy_version: 2
-updated: 2026-07-27
+updated: 2026-08-09
 ---
 
 # Vault 현재 상태
@@ -15,9 +15,10 @@ updated: 2026-07-27
 - 원본 백업: `AI-CONTEXT-LOGGING-pre-migration-20260727.zip`
 - 검수 보고서: [[audits/2026-07-27-ai-context-migration-session-report]]
 - v2 검수 보고서: [[audits/2026-07-27-ai-context-migration-v2-report]]
-- Git 상태: 로컬 저장소, `main`, v1 기준선 `877862c`
-- 원격 저장소: 연결하지 않음
-- Obsidian 커뮤니티 플러그인: 확인된 설치 없음
+- Git 상태: `main`, v1 기준선 `877862c`
+- 원격 저장소: `StockHedge/obsidian-ai-context` (GitHub Private, 2026-08-09 연결)
+- 기기 간 동기화: [[VAULT-SYNC]] — PC(`pc-main`) ↔ 노트북(`laptop`), Obsidian Git 플러그인
+- Obsidian 커뮤니티 플러그인: `Git` (Vinzent03) — 두 기기에 설치 필요
 
 ## 등록 프로젝트
 
@@ -28,15 +29,18 @@ updated: 2026-07-27
 
 ## Inbox
 
-- Cursor: 컨텍스트 로깅 경로 정정 1건, Embolos 임시 인계와 포인터 2건
+- Cursor: 컨텍스트 로깅 경로 정정 1건. Embolos 임시 인계·포인터 2건은 프로젝트 저장소로
+  이관 완료 후 2026-08-09 커밋 `eb065ec`에서 정리 (이력에서 복구 가능)
 - Claude Code, Codex, ChatGPT, Gemini, 기타: 현재 빈 수신함
 
 ## 운영상 남은 작업
 
 - 각 실제 프로젝트에 `AGENTS.md`와 `docs/ai/` 구조 적용
-- `10-inbox/cursor`의 3개 임시 기록을 `review_by`까지 승격·프로젝트 이관·보관 판단
+- ~~`10-inbox/cursor`의 3개 임시 기록 처리~~ → 2026-08-09 완료 (2건 정리, 1건 유지)
 - Claude·Codex·Cursor 실제 전역 설정에 v2 관리 블록을 적용하고 [[50-agent-config/SYNC-STATUS]] 갱신
-- 필요하면 비공개 원격 저장소 연결 여부를 별도로 결정
+- ~~비공개 원격 저장소 연결 여부 결정~~ → 2026-08-09 완료, [[VAULT-SYNC]] 참조
+- `Documents\Obsidian Vault`(카페24 레퍼런스 14건 + 첨부 220장, GameFactory 버그로그 11건)를
+  이 Vault로 통합 — 첨부 링크·한글 파일명·프론트매터 스키마 정규화가 선행 작업
 
 ## 알려진 제약
 

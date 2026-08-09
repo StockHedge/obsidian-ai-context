@@ -2,7 +2,7 @@
 type: git-policy
 schema_version: 2
 policy_version: 3
-updated: 2026-07-29
+updated: 2026-08-09
 ---
 
 # Git 운영 정책
@@ -122,11 +122,15 @@ Claude가 응답을 마칠 때마다 평가하되, 스로틀 간격(기본 600�
 
 ## Vault 적용
 
-- 이 Vault는 `main` 브랜치의 로컬 Git 저장소로 관리한다.
-- 정책·구조·승격 변경은 검증 후 로컬 커밋한다.
-- 원격 저장소 연결과 Push는 사용자 승인 전에는 하지 않는다.
-- 2026-07-29 점검: 원격 없음, 비밀값 스캔 0건, 67파일 0.2MB.
-  이 PC 외에 사본이 없으므로 백업 부재가 단일 장애점이다 — 사용자 결정 대기.
-- 세부 절차는 [[VERSION-CONTROL]]을 따른다.
+- 이 Vault는 `main` 브랜치의 Git 저장소로 관리한다.
+- 정책·구조·승격 변경은 검증 후 커밋한다.
+- 2026-08-09: 사용자 승인으로 GitHub Private 저장소 `StockHedge/obsidian-ai-context`에 연결했다.
+  2026-07-29 점검에서 지적된 "이 PC 외에 사본이 없어 백업 부재가 단일 장애점"은 해소됐다.
+- **자동화 소유권: 이 저장소의 자동 커밋·푸시는 Obsidian Git 플러그인이 단독으로 수행한다.**
+  Vault 저장소에는 `.git/autosync` 마커를 만들지 않으며, 따라서 위 「자동화 계층」의 Stop 훅
+  대상이 아니다. 같은 워킹트리에 자동 커밋 주체가 둘이면 `index.lock` 경합과 편집 중 부분
+  커밋이 발생한다. Claude Code가 Vault를 편집할 때는 이 문서의 수동 커밋 규칙을 따른다.
+- 원격 저장소의 추가 생성·변경(`gh repo create`, `git remote set-url`)은 계속 확인 대상이다.
+- 기기 간 동기화 절차는 [[VAULT-SYNC]], 커밋 단위와 기준선은 [[VERSION-CONTROL]]을 따른다.
 
 이 문서가 공통 Git 권한 정책의 기준이며 각 AI 전역 설정의 복사본보다 우선한다.
