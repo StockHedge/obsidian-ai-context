@@ -12,7 +12,22 @@ updated: 2026-08-09
 
 노트북에서 Claude Code를 쓴다면 이 문서를 그대로 읽혀 실행시켜도 된다.
 
-## 0. 전제 확인
+## 0. 기존 노트북 Vault 처리 (중요)
+
+노트북에는 이미 `Obsidian Vault`가 있고 그 안에 `AI-CONTEXT-LOGGING` 사본이 들어 있다.
+그 사본의 작업분(2026-07-31 ~ 08-04, 8커밋)은 2026-08-09에 원격으로 전부 병합됐다
+([[audits/2026-08-09-vault-consolidation]]). `AIWebbuilder/`와 카페24 레퍼런스도 통합됐다.
+
+**따라서 기존 노트북 Vault는 더 이상 기준이 아니다.** 아래 순서를 지킨다.
+
+1. 기존 `Obsidian Vault` 폴더를 통째로 ZIP 백업한다.
+2. Obsidian에서 해당 Vault 등록을 해제한다(폴더는 아직 지우지 않는다).
+3. 3절대로 새로 clone한 폴더만 연다.
+4. 2~3주 운용해 문제가 없으면 백업만 남기고 원본 폴더를 정리한다.
+
+두 폴더를 동시에 열어두면 같은 노트가 두 벌 존재하게 되고, 이번과 같은 분기가 반복된다.
+
+## 0-1. 전제 확인
 
 ```powershell
 git --version                                  # 없으면 https://git-scm.com/download/win
