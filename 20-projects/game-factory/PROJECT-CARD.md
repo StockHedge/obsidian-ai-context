@@ -5,7 +5,7 @@ project_id: game-factory
 project: AI 게임공장
 status: active
 repo_path:
-updated: 2026-07-27
+updated: 2026-08-09
 last_verified: 2026-07-27
 aliases: [AI 게임공장 버그로그, 게임공장 결함 대시보드]
 tags: [game-factory, android, deployment, ai-pipeline]
@@ -45,6 +45,18 @@ tags: [game-factory, android, deployment, ai-pipeline]
 | 07-23 | alchemy-bounce-master(AGY) | 코드버그 | 보통 | [[2026-07-23-agy-stageclear-placeholder\|스테이지 클리어 {gold}/{essence} 미치환→+0 표시 (payload 누락, 2단계 수정)]] | 해결 |
 | 07-23 | game-factory | 배포·콘솔 | 높음 | [[2026-07-23-agy-headless-hang-zombies\|AGY 헤드리스 행: bare agy 좀비+고아 서버 (하트비트 자동정리로 해결)]] | 해결 |
 | 07-24 | crowd-clash(AGY) | 코드버그 | 치명 | [[2026-07-24-crowdclash-webview-defects\|WebView 전용 결함 3종→베타 소진 escalated (검증환경 불일치)]] | 진행중 |
+
+### 2026-08-09 통합분 (구 `Obsidian Vault/GameFactory-BugLog` 11건)
+
+07-27~07-29 사건 11건이 별도 Vault에 따로 기록돼 있었다. 집계표와 인사이트는
+[[BUGLOG-DASHBOARD]]에 원본 그대로 보존했고, 사건 노트는 이 폴더의 `incidents/`로 합쳤다.
+
+주의: [[2026-07-27-webview-misdiagnosis]]는 위 07-24 항목을 **오진으로 정정**한다.
+3종 중 2건은 실기에서 재현되지 않았고 1건은 원인이 달랐다. 07-24 노트를 단독 근거로
+쓰지 않는다.
+
+두 기록의 프론트매터 스키마가 다르다(구 Vault는 한글 키 `게임/분류/심각도/발견일/해결일/상태`,
+이 Vault는 [[INCIDENT.template]]의 영문 키). 정규화는 별도 작업으로 남아 있다.
 
 ## 초기 인사이트
 - **최다 클러스터 = 배포·콘솔 / 프로세스(3건)**. 실제 게임 로직 버그(1건)보다 **Play Console 제출 게이트와 서비스계정 권한**에서 마찰이 컸다. → 신규 앱 첫 제출 체크리스트를 표준화하면 가장 큰 효율 이득.
