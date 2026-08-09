@@ -1,18 +1,37 @@
 ---
 type: agent-config-sync-status
 schema_version: 2
-policy_version: 3
-updated: 2026-07-29
+policy_version: 4
+updated: 2026-08-09
 ---
 
 # AI 전역 설정 배포 상태
 
 | 대상 | 기준 정책 | 템플릿 | 실제 설정 반영 | 마지막 확인 |
 |---|---:|---:|---|---|
-| Claude Code | 3 | 3 | 반영됨 (policy_version 3, 관리 블록 1회, Stop·SessionStart 훅 등록) | 2026-07-29 |
-| Codex | 3 | 3 | **재배포 대상** (실제 설정 policy_version 2) | 2026-07-29 |
-| Cursor User Rules | 3 | 3 | **재배포 대상** (실제 설정 policy_version 2, UI 수동 갱신 필요) | 2026-07-29 |
-| Cursor 전역 폴더 (`~/.cursor`) | 3 | 3 | **재배포 대상** (`shared-context.mdc` 미갱신) | 2026-07-29 |
+| Claude Code (PC) | 4 | 4 | 반영됨 (policy_version 4, 관리 블록 1회, Stop·SessionStart 훅 등록) | 2026-08-09 |
+| Claude Code (노트북) | 4 | 4 | **재배포 대상** — `claude-dotfiles` pull 후 확인 필요 | 2026-08-09 |
+| Codex | 4 | 4 | **재배포 대상** (실제 설정 policy_version 2) | 2026-07-29 |
+| Cursor User Rules | 4 | 4 | **재배포 대상** (실제 설정 policy_version 2, UI 수동 갱신 필요) | 2026-07-29 |
+| Cursor 전역 폴더 (`~/.cursor`) | 4 | 4 | **재배포 대상** (`shared-context.mdc` 미갱신) | 2026-07-29 |
+
+## v4 배포 기록 — Claude Code / PC (2026-08-09)
+
+- 기준 문서 선행 수정: [[GIT-POLICY]] policy_version 3 → 4 (「Vault 적용」에 저장소별
+  자동화 소유권 명시), [[VAULT-SYNC]] 신설, [[LAPTOP-SETUP]] 신설
+- 템플릿 갱신: `50-agent-config/claude/CLAUDE-MIGRATION-GUIDE.md` (관리 블록 v4)
+- 실제 설정: `%USERPROFILE%\.claude\CLAUDE.md` 관리 블록 교체.
+  백업 `CLAUDE.md.bak-20260809`. 관리 블록 밖의 사용자 규칙은 한 줄도 건드리지 않았고,
+  변경 이력은 파일 상단 주석 v2.6에 기록했다.
+- v4에서 새로 배포된 항목
+  - Vault 경로를 `%USERPROFILE%` 기준으로 전환 (PC `jihon` / 노트북 `강지호`로 프로필명이 다름)
+  - Vault 원격 `StockHedge/obsidian-ai-context` 및 [[VAULT-SYNC]] 참조
+  - Vault 저장소에 `.git/autosync` 마커 금지 (자동 커밋 주체는 Obsidian Git 단독)
+  - Vault 파일·폴더명 변경 금지 (첨부·MOC가 `[[파일명]]` 최단 형식 링크)
+  - 한글 경로 대응 `core.quotepath false` / `core.longpaths true`
+  - 구 Vault 2벌(`Documents\Obsidian Vault`, 노트북 `Obsidian Vault`)은 폐기 대상
+- 미반영: 노트북의 `claude-dotfiles`, Codex, Cursor 3종. 각 기기·도구에서 pull 또는
+  재배포가 필요하다.
 
 ## Cursor 전역 폴더 배포 기록 (2026-07-27 21:40 KST)
 

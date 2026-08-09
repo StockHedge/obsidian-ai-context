@@ -2,8 +2,8 @@
 document_type: ai-migration-guide
 target: claude-code
 version: 2
-policy_version: 3
-date: 2026-07-29
+policy_version: 4
+date: 2026-08-09
 ---
 
 # Claude Code 컨텍스트 체계 마이그레이션 가이드 v2
@@ -16,7 +16,8 @@ Claude Code의 로컬 메모리나 한 대화에 프로젝트 상태를 가두�
 
 중앙 Vault:
 
-`C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+`%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+(PC는 `C:\Users\jihon\...`, 노트북은 `C:\Users\강지호\...`)
 
 1. Vault가 로컬 Git 저장소인지 확인한다.
 2. `main`과 현재 변경 상태를 확인한다.
@@ -51,8 +52,8 @@ Vault가 Git 저장소가 아니거나 변경 충돌의 소유권을 구분할 �
 <!-- shared-ai-context:start -->
 # Shared AI Context Protocol
 
-- Managed policy version: 3
-- Canonical source: `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md`
+- Managed policy version: 4
+- Canonical source: `%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING\00-home\POLICY-DISTRIBUTION.md`
 - 이 관리 블록은 배포본이다. 직접 수정하지 않고 Vault 기준 문서를 먼저 수정한다.
 - 기본 응답 언어는 한국어다.
 - 작업 시작·재개 시 프로젝트 지침, `docs/ai/NOW.md`, Git 상태, 기존 미커밋 변경을 다시 확인한다.
@@ -60,13 +61,23 @@ Vault가 Git 저장소가 아니거나 변경 충돌의 소유권을 구분할 �
 - 다른 AI나 사용자의 변경을 임의로 덮어쓰지 않는다.
 - 현재 인계는 프로젝트 `docs/ai/NOW.md`에 100줄 이하로 유지한다.
 - 프로젝트별 사실은 전역 지침이나 Claude 자동 메모리에 저장하지 않는다.
-- 중앙 Vault는 `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`이다.
+- 중앙 Vault는 `%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING` 하나뿐이다.
+  기기마다 사용자 프로필명이 다르므로(`jihon` / `강지호`) 절대경로를 하드코딩하지 않는다.
+  구 `Documents\Obsidian Vault`와 노트북 구 `Obsidian Vault`는 2026-08-09 통합 후 폐기
+  대상이며 기준으로 참조하지 않는다.
+- Vault 원격은 GitHub Private `StockHedge/obsidian-ai-context`이고, 기기 간 동기화는
+  Obsidian Git 플러그인이 담당한다. 절차는 `00-home/VAULT-SYNC.md`를 따른다.
+- Vault 저장소에는 `.git/autosync` 마커를 만들지 않는다. 이 저장소의 자동 커밋 주체는
+  Obsidian Git 단독이며, Stop 훅과 겹치면 `index.lock` 경합과 부분 커밋이 발생한다.
+- Vault의 파일·폴더명을 임의로 바꾸지 않는다. 첨부 220건과 MOC가 `[[파일명]]` 최단 형식
+  링크를 쓰므로 이름 변경은 링크를 끊는다. 변경은 링크 재작성과 한 작업으로만 한다.
+- 한글 경로 대응으로 `core.quotepath false`, `core.longpaths true`를 전역에 둔다.
 - Vault 기록 전 `00-home/WRITING-POLICY.md`와 `10-inbox/INBOX-REVIEW.md`를 읽는다.
 - 검증된 중요 사건과 재사용 가능한 교훈만 Vault에 승격한다.
 - 매주 첫 세션, review_by 도래, Inbox 5건 누적, 단계 종료 시 Inbox 검토 필요를 알린다.
 - 로컬 파일 변경이 다른 진행 중 대화에 자동 주입된다고 가정하지 않는다.
 - 비밀키, 토큰, 쿠키, 개인정보를 문서와 Git에 기록하지 않는다.
-- Git 작업은 `40-profile/GIT-POLICY.md`(policy_version 3)를 따른다.
+- Git 작업은 `40-profile/GIT-POLICY.md`(policy_version 4)를 따른다.
 - 작업 브랜치의 로컬 커밋, `push`, `pull --rebase`는 사용자 확인 없이 수행한다.
   사용자는 Git 명령을 직접 실행하지 않으므로 확인 요구는 미푸시 누적으로만 귀결된다.
 - 보호 브랜치(`main`/`master`/`release/*`/`prod`) push, merge, 수동 rebase, cherry-pick,
@@ -121,7 +132,7 @@ project/
 ## 5단계: 검증과 배포 기록
 
 1. 백업과 변경 diff를 확인한다.
-2. 관리 블록이 정확히 한 번 있고 `Managed policy version: 2`인지 확인한다.
+2. 관리 블록이 정확히 한 번 있고 `Managed policy version: 4`인지 확인한다.
 3. 새 Claude Code 세션에서 프로젝트 지침과 `NOW.md`가 로드되는지 확인한다.
 4. Vault 경로와 문서 링크를 확인한다.
 5. 중복 규칙과 비밀정보를 검사한다.
