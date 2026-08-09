@@ -4,9 +4,9 @@ schema_version: 2
 project_id: for-marketing
 status: active
 repo_path: C:\Users\강지호\project\for-marketing
-remote_url: (없음 — 로컬 전용, 원격 생성은 사용자 결정 대기)
+remote_url: https://github.com/StockHedge/for-marketing (비공개)
 branch: main
-head_commit: 9034e75
+head_commit: 8d61a1b
 updated: 2026-08-04
 last_verified: 2026-08-04
 agents: [claude-code]
@@ -22,7 +22,10 @@ aiwebbuilder·embolos 두 플랫폼의 마케팅(수집→생성→게이트→�
 
 ## 기준 위치
 
-- 로컬 저장소: `C:\Users\강지호\project\for-marketing`
+- 로컬 저장소: `C:\Users\강지호\project\for-marketing` (주: 조만간 다른 PC로 이관
+  예정 — 기기 이관 시 이 필드와 `repo_path`를 함께 갱신할 것)
+- 원격 저장소: `https://github.com/StockHedge/for-marketing` (비공개, gh CLI로
+  2026-08-04 확인)
 - 현재 상태: `docs/ai/NOW.md` (페이즈별 완료 기록·대기 항목)
 - 접점 계약 정본: `docs/contracts/t9-integration.md`(플랫폼), `docs/contracts/dashboard-api.md`(대시보드 v7)
 - 전체 설계: `~/.claude/plans/c-users-downloads-marketing-pipeline-ma-partitioned-kay.md` (승인본)
@@ -31,7 +34,8 @@ aiwebbuilder·embolos 두 플랫폼의 마케팅(수집→생성→게이트→�
 
 - backend/ FastAPI 단일 앱 — 6계층 디렉터리(collectors/intelligence/gates/executors/feedback/orchestrator)
   - 오케스트레이션: GitHub Actions cron → `POST /internal/cron/{job}` (X-Cron-Secret, advisory lock 멱등)
-  - Meta 연동 4모드: disabled|stub|dryrun|live — 토큰 없이 전 구간 동작(현재 stub)
+  - Meta 연동 4모드: disabled|stub|dryrun|live — 토큰 없이 전 구간 동작
+    (2026-08-04부터 live, 페이지 토큰 보유 여부로 게이팅)
 - frontend/ React SPA — 홈/파이프라인(칸반)/승인/소재실/광고/이메일/커뮤니티/어트리뷰션/설정
 - 로컬 기동: `docker compose up -d`(pg:5434, redis:6381) + backend uvicorn:8000 + `npm run dev`:5173
 
@@ -47,28 +51,43 @@ aiwebbuilder·embolos 두 플랫폼의 마케팅(수집→생성→게이트→�
 
 ## 현재 단계
 
-**P0~P9 전 페이즈 완료(2026-08-04)** — 멀티에이전트 전체 리뷰(확정 20건 전량 수정) 포함.
-pytest 510/프론트 58 그린. 남은 것은 전부 외부 의존(배포·Meta 토큰·실데이터 시드) —
-상세는 저장소 `docs/ai/NOW.md`.
+**P0~P9 전 페이즈 + 배포 + Meta live 전환 + P7 실 Graph 발행까지 완료(2026-08-04).**
+이전 카드(커밋 9034e75, P0~P9 빌드 완료 시점) 이후 진전: 운영 배포(Fly+Neon+Upstash+
+CF Pages, cron 전 경로 실증) 완주 / Meta 60일 사용자 토큰→무기한 페이지 토큰 교환 및
+토큰 매니저(store/refresh/health) 신규 구현(P1 명세 누락분을 부트스트랩 시점에 발견) /
+P7 실 Graph 발행·커뮤니티 클라이언트 전량 실구현 / R2 실연결 / Meta 웹훅 구독 active /
+렌더링 에셋 저장소 편입 / GH Actions cron 100분 주기 통합. 상세는
+[[2026-08-04-p7-live-publish-r2-webhook]]와 저장소 `docs/ai/NOW.md`.
 
-대기 중 사용자 액션: Meta 페이지 토큰(P7~P8 live 전환), YOUTUBE_API_KEY·META_APP_ID/SECRET(실수집),
-core 해시태그·경쟁 계정 목록, 발신 서브도메인 DNS(대량 발송 전), DoD ⑤ 실도달(발송창 내 재실행).
+남은 것: core 해시태그·경쟁 계정 목록, 발신 서브도메인 DNS(대량 발송 전), DoD ⑤
+이메일 실도달(발송창 내 재실행), 광고 실집행 검증, `generate_enabled` 스위치 전환
+(사용자 판단 대기), `ig_user_id` Meta 측 전파 대기(야간 잡 자동 재시도 중), embolos
+트랙(2026-08-11 리마인드 예정).
 
 ## 중요 사건
 
 - [[2026-08-03-tests-called-real-external-apis]] — 테스트가 실자격증명 상속으로 실제 외부 API 호출
+- [[2026-08-04-secret-leaked-via-error-url]] — Meta 토큰 부트스트랩 오류 문자열의
+  URL이 client_secret·토큰을 유출(운영 DB 1행 한정, resolved)
 
 ## 주요 마일스톤
 
 - [[2026-08-04-hub-p0-p8-built]] — 허브 전 계층 구축 + 실연동 검증
+- [[2026-08-04-p7-live-publish-r2-webhook]] — Meta live 전환 + P7 실 Graph 발행 +
+  R2 실연결 + 웹훅 구독
 
 ## 관련 공통 패턴
 
 - [[test-isolation-of-external-credentials]]
+- [[s3-compatible-storage-silent-incompatibility]]
+- [[gitignored-runtime-assets-break-deploy]]
 
 ## 마지막 검증
 
-- 확인일: 2026-08-04
-- 확인한 근거: backend pytest 458 passed·ruff·mypy 클린 / frontend 테스트 54·typecheck·build 클린 /
-  브라우저 실연동 E2E(획득·어트리뷰션·승인·발행 stub·알림 Telegram 실도착)
-- 확인하지 못한 항목: Meta live 발행·광고 실집행(토큰 대기), 이메일 실도달(발송창), 배포 환경
+- 확인일: 2026-08-04 (P7·R2·웹훅 세션 — 이번 갱신은 이 세션 결과 반영)
+- 확인한 근거: backend pytest 559 passed·ruff·mypy 클린 / frontend typecheck 통과 /
+  셋업 체크리스트 실프로브 10개 중 9 ok(embolos만 미설정) / R2 실왕복(업로드→공개
+  GET 200→회수→GET 404) / Meta 웹훅 구독 active 확인 / 운영 배포
+  (Fly+Neon+Upstash+CF Pages) cron 전 경로 실증
+- 확인하지 못한 항목: 광고 실집행(예산 소액이라도 live 집행 실증 없음), 이메일
+  실도달(발송창 내 재실행), embolos 트랙, `ig_user_id` 바인딩(자동 재시도 진행 중)
