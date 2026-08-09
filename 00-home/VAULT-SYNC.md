@@ -14,7 +14,13 @@ Git 권한 경계는 [[GIT-POLICY]], 커밋 단위와 기준선은 [[VERSION-CON
 ## 구성
 
 - 원격: GitHub Private 저장소 `StockHedge/obsidian-ai-context`
-- 경로: 두 기기 모두 `…\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+- 경로: 두 기기 모두 `%USERPROFILE%\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+  - PC(`pc-main`): `C:\Users\jihon\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+  - 노트북(`laptop`): `C:\Users\강지호\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING`
+  - **사용자 프로필 이름이 두 기기에서 다르다**(`jihon` / `강지호`). 절대경로를 문서나
+    스크립트에 하드코딩하지 말고 `%USERPROFILE%` 기준으로 쓴다. 노트북 경로에는 한글이
+    들어가므로 `core.quotepath false`·`core.longpaths true` 설정이 특히 중요하다
+    ([[windows-ascii-tool-paths]] 참조).
 - 도구: Obsidian 커뮤니티 플러그인 `Git` (Vinzent03)
 - 인증: Git Credential Manager (Windows 자격 증명 관리자)
 - 전송 경로는 GitHub이며 Tailscale과 무관하다. Tailscale/Remote-SSH는 코드 작업용이고

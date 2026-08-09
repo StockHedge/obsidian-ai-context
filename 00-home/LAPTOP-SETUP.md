@@ -81,8 +81,10 @@ git config pull.rebase false
 git log --oneline -3
 ```
 
-노트북 사용자명이 `jihon`이 아니면 경로가 달라진다. 그 경우 이 문서의 경로 표기를 노트북
-기준으로 정정해 커밋한다.
+2026-08-09 실측: 노트북의 사용자 프로필은 `jihon`이 아니라 **`강지호`** 다.
+따라서 실제 경로는 `C:\Users\강지호\TheNewProject\OBSIDIAN\AI-CONTEXT-LOGGING` 이다.
+Vault 폴더 구조는 두 기기가 같지만 프로필 이름이 다르므로, 문서·스크립트에는 절대경로를
+하드코딩하지 말고 `%USERPROFILE%` 기준으로 쓴다.
 
 ## 4. Obsidian에서 열기
 
