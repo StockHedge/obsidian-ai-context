@@ -1,11 +1,27 @@
 ---
 type: git-policy
 schema_version: 2
-policy_version: 4
-updated: 2026-08-09
+policy_version: 5
+updated: 2026-08-13
 ---
 
 # Git 운영 정책
+
+## 개정 이유 (v4 → v5, 2026-08-13)
+
+v3는 "작업 브랜치의 push는 확인 없이"로 권한을 넓혔다. 그러나 개인 dotfiles와 Vault는
+작업 브랜치를 두지 않고 `main` 단일 브랜치로 운영된다. 이 저장소들에서는 v3의 완화가
+한 번도 적용되지 않고 **모든 push가 보호 브랜치 확인 대상**이 되어, v3가 없애려던
+"확인 대기 중 방치"가 그대로 남았다.
+
+2026-08-13 실측: `claude-dotfiles`에 미푸시 5커밋 누적(`behind 0` / `ahead 5`).
+직접 원인은 `_dotfiles/claude-sync.ps1`의 `push` 액션이 커밋할 새 변경이 없으면
+`return`으로 빠져나가 `git push`에 도달하지 못한 것이었고(같은 날 수정), 구조적 원인은
+1인 private 저장소에까지 보호 브랜치 규칙을 일률 적용한 것이다.
+
+v5는 협업자·CI·배포가 붙지 않은 1인 private 저장소의 fast-forward push를 확인 대상에서
+제외한다. force push 금지와 public 저장소 push 확인은 그대로 유지된다 — 완화의 근거는
+"되돌릴 수 있는가"이지 "내 저장소인가"가 아니기 때문이다.
 
 ## 개정 이유 (v3 → v4, 2026-08-09)
 
@@ -61,14 +77,22 @@ CLAUDE.md에 규칙이 있던 저장소에서도 동일한 누락이 발생했�
 - **작업 브랜치에서의 `git pull --rebase --autostash`** (v3 신설)
   - 보호 브랜치가 아니고, 충돌이 발생하지 않는 경우에 한한다
   - 충돌이 나면 즉시 중단하고 사용자에게 보고한다 (자동 해소 금지)
+- **1인 private 저장소의 보호 브랜치 `push`·`pull --rebase`** (v5 신설)
+  - 대상: 사용자 1인이 소유·사용하는 private 저장소로, 협업자·CI·배포 파이프라인이
+    연결돼 있지 않은 것. 현재 해당: `StockHedge/claude-dotfiles`,
+    `StockHedge/obsidian-ai-context`
+  - 조건: `behind 0`인 **fast-forward**일 것. merge나 수동 rebase가 필요한 상태면
+    확인 대상으로 되돌아간다
+  - `--force` 계열은 이 예외에 포함되지 않는다 (아래 「절대 금지」 유지)
+  - 저장소가 public으로 전환되거나 협업자가 추가되면 예외는 즉시 소멸한다
 - **자동화 훅에 의한 WIP 커밋·푸시** — 아래 「자동화 계층」의 조건을 모두 만족할 때
 
 브랜치나 커밋을 만들었다면 이름, 커밋 해시, 포함 파일을 사용자에게 보고한다.
 
 ## 사용자 확인이 필요한 것
 
-- **보호 브랜치로의 `push`**
-- 보호 브랜치에서의 `pull`
+- **보호 브랜치로의 `push`** — 위 「1인 private 저장소」 예외(v5)에 해당하면 제외
+- 보호 브랜치에서의 `pull` — 위 예외에 해당하고 fast-forward면 제외
 - 브랜치 병합 (`merge`)
 - 대화형·수동 `rebase` (위 자동 `pull --rebase` 예외 제외)
 - `cherry-pick`, `revert`

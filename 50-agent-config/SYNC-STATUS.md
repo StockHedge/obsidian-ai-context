@@ -1,19 +1,38 @@
 ---
 type: agent-config-sync-status
 schema_version: 2
-policy_version: 4
-updated: 2026-08-09
+policy_version: 5
+updated: 2026-08-13
 ---
 
 # AI 전역 설정 배포 상태
 
 | 대상 | 기준 정책 | 템플릿 | 실제 설정 반영 | 마지막 확인 |
 |---|---:|---:|---|---|
-| Claude Code (PC) | 4 | 4 | 반영됨 (policy_version 4, 관리 블록 1회, Stop·SessionStart 훅 등록) | 2026-08-09 |
-| Claude Code (노트북) | 4 | 4 | **재배포 대상** — `claude-dotfiles` pull 후 확인 필요 | 2026-08-09 |
-| Codex | 4 | 4 | 반영됨 (policy_version 4, Claude Code 전역 구성 Codex 형식 이식) | 2026-08-09 |
-| Cursor User Rules | 4 | 4 | **재배포 대상** (실제 설정 policy_version 2, UI 수동 갱신 필요) | 2026-07-29 |
-| Cursor 전역 폴더 (`~/.cursor`) | 4 | 4 | **재배포 대상** (`shared-context.mdc` 미갱신) | 2026-07-29 |
+| Claude Code (PC) | 5 | 5 | 반영됨 (policy_version 5, Git v5 1인 private push 예외) | 2026-08-13 |
+| Claude Code (노트북) | 5 | 5 | **재배포 대상** — `claude-dotfiles` pull 후 확인 필요 | 2026-08-09 |
+| Codex | 5 | 4 | **재배포 대상** (Git v5 미반영, 템플릿도 v4) | 2026-08-13 |
+| Cursor User Rules | 5 | 3 | **재배포 대상** (실제 설정 policy_version 2, UI 수동 갱신 필요) | 2026-07-29 |
+| Cursor 전역 폴더 (`~/.cursor`) | 5 | 4 | **재배포 대상** (`shared-context.mdc` 미갱신) | 2026-07-29 |
+
+## Claude Code 배포 기록 — policy_version 5 (2026-08-13)
+
+- 계기: `claude-dotfiles`에 미푸시 5커밋 누적(`behind 0` / `ahead 5`)이 관측됐다.
+  직접 원인은 `_dotfiles/claude-sync.ps1`의 `push` 액션이 커밋할 새 변경이 없으면
+  `return`으로 빠져나가 `git push`에 도달하지 못한 것이다(같은 날 수정, 구문 검사 통과).
+  구조적 원인은 `main` 단일 브랜치로 운영되는 1인 private 저장소에까지 보호 브랜치
+  확인 규칙이 일률 적용되어, v3의 「작업 브랜치 push 허용」 완화가 이 저장소들에는
+  한 번도 적용되지 않은 것이다. v3가 없애려던 "확인 대기 중 방치"가 그대로 남았다.
+- 기준 문서 선행 수정: [[GIT-POLICY]] policy_version 4 → 5.
+  「AI가 별도 확인 없이 할 수 있는 것」에 1인 private 저장소의 보호 브랜치
+  fast-forward push·pull 예외를 신설하고, 「사용자 확인이 필요한 것」의 해당 두 항목에
+  예외 참조를 달았다. force push 금지와 public 저장소 push 확인은 유지된다.
+- 배포: `50-agent-config/claude/CLAUDE-MIGRATION-GUIDE.md`(관리 블록 원본)와
+  실제 설정 `%USERPROFILE%\.claude\CLAUDE.md`에 동일 문안을 반영했다.
+- 같은 세션에서 실제 설정의 `permissions.defaultMode`가 작업 트리에서 `dontAsk`로
+  설정돼 있던 것을 확인했다. 이 모드는 allow 규칙 밖 도구 호출을 묻지 않고 자동
+  거부하며 용도가 잠금 CI다. 커밋된 정본은 계속 `auto`였다.
+- 미반영: Codex·Cursor 관리 블록은 이번 배포 범위 밖이다 (위 표에서 재배포 대상).
 
 ## Codex v4 + Claude Code 전역 구성 이식 기록 (2026-08-09)
 
