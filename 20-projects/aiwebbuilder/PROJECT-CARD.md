@@ -5,8 +5,8 @@ project_id: aiwebbuilder
 project: AI Webbuilder
 status: active
 repo_path: (사용자 홈)\projectaiwebbuilder
-updated: 2026-08-09
-last_verified: 2026-07-31
+updated: 2026-08-17
+last_verified: 2026-08-17
 agents: [claude-code]
 tags: [aiwebbuilder, marketing, saas]
 ---
@@ -17,6 +17,9 @@ tags: [aiwebbuilder, marketing, saas]
 
 한국 시장 특화 AI 웹사이트 빌더(소상공인·프리랜서 대상). 유형을 고르고 폼을 채우면 AI가
 5~10분 안에 사이트를 만들어 배포한다. 미리보기 무료, 결제는 마음에 들 때만.
+
+**2026-08 부터 채널이 둘이다** — 웹(운영 중) + **Android 앱**(코드 완료, 스토어 제출 전).
+앱은 결제를 앱 안에서 하지 않고 세션 핸드오프로 웹 브라우저에 넘긴다(Play Store 우선 결정).
 
 ## 기준 위치
 
@@ -41,6 +44,10 @@ tags: [aiwebbuilder, marketing, saas]
 
 - 광고 문구와 실제 코드가 갈라진 전례가 반복됐다(티어 표기, 만료 개념, 기한 하드코딩).
   금전 혜택을 다루므로 분쟁 소지가 실질적이다. 광고 집행 전 [[표기-주의사항]]을 먼저 본다.
+- **같은 괴리가 규제 문서에서도 확인됐다**(2026-08-17). 개인정보처리방침이 존재하지 않는
+  탈퇴 경로를 안내하고 있었다 — 방침·약관은 테스트도 린트도 되지 않아 렌더만 되면 통과처럼
+  보인다. 앱 스토어 제출이 이 괴리를 드러냈다.
+  [[2026-08-17-missing-account-deletion-path]]
 
 ## 마지막 검증
 
@@ -50,7 +57,11 @@ tags: [aiwebbuilder, marketing, saas]
 - 해소: 운영 `app_settings` 실값, 포스터 QR 실제 스캔, START2026 `expires_at` 반영
 - 해소(2026-08-09): **실사용 생성 2건** — 파이프라인 계측·크레딧 원장 실검증 완료
   ([[2026-08-09-P0-첫-실사용-생성-계측-원장-실검증]])
+- 해소(2026-08-10): **Gemini 경로 비용 실측** — 동일 입력 비교로 opus 대비 비용 −54% ·
+  소요 −51%. 단 절감의 45%는 단가가 아니라 "덜 만들어서"다(완성 HTML −28%).
+- 검증(2026-08-17): 모바일 앱 실기기 확인(EAS preview 독립 빌드) — 로그인·크레딧 조회·
+  푸시 등록·App Links `verified`. 백엔드 947 테스트 통과, 운영 배포 후 엔드포인트 실호출 확인.
 - 확인하지 못한 항목: 배포 → 무료 구독 자동 생성(`subscription=0`), 갱신 결제 실사용,
-  Plus/Pro 호스팅 실결제, **Gemini 경로 비용 실측**
+  Plus/Pro 호스팅 실결제, **앱 푸시 실수신 1회**, **production AAB 빌드**
 - 2026-08-09: 노트북 Vault에서 이 Vault로 통합. 파일·폴더명은 내부 위키링크 보존을 위해
   원본 그대로 유지했다 ([[VAULT-STATUS]] 「알려진 제약」 참조).
