@@ -58,9 +58,19 @@ tags: [fintech, education, simulation-trading, fastapi, expo]
 
 ## 현재 단계
 
-**출시 게이트 사실상 완료 (2026-08-17)** — 백엔드 자동 배포 + 웹 프론트 운영 배포까지.
-잔여: EAS 네이티브 빌드(Expo 계정 필요), 웹 초기 로드 NetworkError 1건 조사,
-PR #69(Wave 1 하드닝) rebase·머지 결정, education quiz v1/v2 통합 결정.
+**개발자 계정 운영 E2E 진행 중 (2026-08-18 분기점 인계)** — 로그인·교육 3레벨(각 100점)·
+성향조사(MODERATE)·거래목록·종목상세·리포트·랭킹까지 검증 완료. **중단 지점: 매수 주문
+체결 직전** (이후 포트폴리오→미션→기프티콘 교환 순). 상세 체크리스트는 저장소
+`docs/PROJECT_STATUS.md` §4-1 + §9 프롬프트가 기준.
+
+E2E 중 결함 2건 발견·수정·배포 완료(토큰 자동 갱신 부재 / 종목상세 네이티브 `<text>`
+크래시). 잔여 이슈 4건(교육 본문 빈 값, 홈 지수 위젯 0, edge-to-edge 탭바 겹침,
+퀴즈 미답 안내 부재)은 미수정 기록 상태.
+
+이전 완료(2026-08-17): 출시 게이트 — 백엔드 자동 배포 + 웹 프론트 운영 배포.
+잔여: EAS 네이티브 빌드(Expo 계정 stockhedges-team 로그인 확인됨), 웹 NetworkError·
+Ionicons tofu 조사, PR #69 rebase 결정, quiz v1/v2 통합 결정, SENS 발신번호 승인 대기
+(01076664510 — 승인 시 secrets deploy 만 하면 SMS 개통).
 
 - **시크릿 회전(P0로 기록돼 있던 항목)은 2026-08-17 사용자 결정으로 진행하지 않음.**
   노출 이력 있는 Neon DB 패스워드·Kakao 키가 유지된다는 리스크는 인지된 상태.
@@ -74,6 +84,11 @@ PR #69(Wave 1 하드닝) rebase·머지 결정, education quiz v1/v2 통합 결�
   → 같은 날 RegisterScreen 패치 백업 후 origin/main 으로 정렬 완료 (사용자 승인).
 - 2026-08-17 발견: CI 자동 배포가 빌드 컨텍스트 오류("/requirements.txt not found")로
   한 번도 성공한 적 없던 상태 — `working-directory: backend` 픽스로 해소, run 성공 검증.
+- 2026-08-18 발견(운영 E2E): ① access 토큰 15분 만료 후 refresh 미사용으로 인증 API
+  전면 401 — 자동 갱신 인터셉터로 수정, 운영 로그 실증. ② 종목상세 차트의 웹 SVG
+  소문자 `<text>` → 네이티브 Render Error 로 화면 진입 불가 — 웹에선 우연히 동작해
+  은폐. 교훈: **환경 분기(웹/네이티브, DEBUG 분기)의 프로덕션 쪽 가지는 실환경 E2E
+  없이는 커버리지 사각지대** (SMS 500 결함과 동일 패턴 재확인).
 
 ## 주요 마일스톤
 

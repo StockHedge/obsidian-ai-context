@@ -4,9 +4,9 @@ schema_version: 2
 project_id: game-factory
 project: AI 게임공장
 status: active
-repo_path:
-updated: 2026-08-09
-last_verified: 2026-07-27
+repo_path: StockHedge/various-game (모노레포, 2026-08-17 통합)
+updated: 2026-08-22
+last_verified: 2026-08-22
 aliases: [AI 게임공장 버그로그, 게임공장 결함 대시보드]
 tags: [game-factory, android, deployment, ai-pipeline]
 ---
@@ -19,8 +19,9 @@ tags: [game-factory, android, deployment, ai-pipeline]
 
 ## 기준 위치
 
-- 로컬 저장소: 미확인 (`various-game` / `game-factory` 관련 저장소)
-- 현재 작업: 저장소의 `docs/ai/NOW.md`를 도입한 뒤 그 문서를 기준으로 사용
+- 로컬 저장소: `~/project/various-game` (모노레포 1개. 게임별 저장소 10개는 archive)
+- **현재 작업 단일 출처: `game-factory/docs/ai/NOW.md`** — 상태·인계는 거기서 읽는다.
+  이 카드는 사건·마일스톤 인덱스이지 현재 상태가 아니다.
 - 중요 사건: `incidents/`
 - 공통 작성 정책: [[WRITING-POLICY]]
 
@@ -45,6 +46,8 @@ tags: [game-factory, android, deployment, ai-pipeline]
 | 07-23 | alchemy-bounce-master(AGY) | 코드버그 | 보통 | [[2026-07-23-agy-stageclear-placeholder\|스테이지 클리어 {gold}/{essence} 미치환→+0 표시 (payload 누락, 2단계 수정)]] | 해결 |
 | 07-23 | game-factory | 배포·콘솔 | 높음 | [[2026-07-23-agy-headless-hang-zombies\|AGY 헤드리스 행: bare agy 좀비+고아 서버 (하트비트 자동정리로 해결)]] | 해결 |
 | 07-24 | crowd-clash(AGY) | 코드버그 | 치명 | [[2026-07-24-crowdclash-webview-defects\|WebView 전용 결함 3종→베타 소진 escalated (검증환경 불일치)]] | 진행중 |
+| 08-21 | crowd-clash(AGY) | 검증 | 보통 | [[2026-08-21-verification-bypass-blind-spot\|검증 우회가 만든 사각지대 — 에뮬 실검증 통과분에 회귀 잔존]] | 해결 |
+| 08-22 | coop-defense / matgo | 유통 | 보통 | [[2026-08-22-store-listing-outside-release-pipeline\|등재정보가 릴리스 파이프라인 밖에 있어 앱과 따로 늙었다]] | 해결 |
 
 ### 2026-08-09 통합분 (구 `Obsidian Vault/GameFactory-BugLog` 11건)
 
@@ -67,6 +70,13 @@ tags: [game-factory, android, deployment, ai-pipeline]
 - [ ] **AdMob 실 유닛 미발급** — 3게임 모두 v1.0은 Google 공식 **테스트 광고 ID**로 출시(의도적). 광고는 뜨나 **수익 0**. → v1.0.1에서 AdMob 콘솔 앱 등록 후 실 ID 3종 교체 · 재배포 · 등재정보 연결 필요.
 - [ ] 심사 **통과/반려 결과**를 각 게임별로 이 로그에 후속 기록.
 
+## 마일스톤
+
+사건이 아니라 **국면 전환**을 남긴다. `milestones/` 아래 노트 1개씩.
+
+- [[2026-08-17-various-game-monorepo-consolidation]] — 게임 저장소 10개 → 모노레포 1개
+- [[2026-08-22-growth-pivot-distribution-first]] — 신규 게임 생산 중단, 유통·계측으로 전환
+
 ## 관련 공통 패턴
 
 - [[windows-ascii-tool-paths]]
@@ -74,5 +84,6 @@ tags: [game-factory, android, deployment, ai-pipeline]
 - [[evidence-before-agent-claims]]
 - [[validate-in-target-runtime]]
 - [[symptom-is-not-root-cause]]
+- [[management-api-blind-spot-observe-public-surface]]
 
 과거 특정 AI의 비공유 메모리 식별자는 v2에서 공용 패턴 링크로 정규화했다.

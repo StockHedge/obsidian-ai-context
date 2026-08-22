@@ -5,7 +5,7 @@ project: aiwebbuilder
 component: privacy / account
 category: compliance
 severity: high
-status: open
+status: resolved
 root_cause_status: confirmed
 discovered: 2026-08-17
 agents: [claude-code]
@@ -73,3 +73,15 @@ tags: [privacy-policy, play-store, account-deletion, compliance, doc-code-drift]
 바꿔 말하면, **새 채널을 열지 않으면 영영 드러나지 않는다.**
 
 관련: [[확정-결정]]
+
+## 해소 (2026-08-18)
+
+- `POST /api/users/me/delete` + 공개 페이지 `/account/delete` + 앱 진입점 + 방침 §7.1 신설.
+  절차 본체는 `backend/app/accounts/deletion.py` 로 추출해 운영자 경로와 공유한다.
+- Play Console 「데이터 보안」의 **계정 삭제 URL 칸에 실제로 입력**했다. 그 칸은
+  요구사항 3가지를 명시한다 — 앱/개발자 이름 기재, 삭제 요청 단계 표시, 삭제·보관 데이터
+  유형과 기간 지정. 만든 페이지가 셋 다 충족한다.
+- 구현 중 드러난 더 큰 결함 3건(익명화가 로그인을 안 끊음 / `email_verified` 잔존 /
+  평문 PII 잔류)은 저장소 `PROGRESS.md` 모바일 앱 절에 기록.
+- 🔴 남은 트레이드오프: `phone_hash` 를 **일부러 남긴다**(1폰=1계정 가드). 비우면
+  탈퇴→재가입 무료혜택 루프가 열린다. 대가로 같은 번호 자동 재가입이 막힌다.
