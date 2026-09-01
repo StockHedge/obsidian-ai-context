@@ -1,7 +1,7 @@
 ---
 type: project-index
 schema_version: 1
-updated: 2026-08-09
+updated: 2026-09-01
 ---
 
 # 프로젝트 인덱스
@@ -13,6 +13,7 @@ updated: 2026-08-09
 | `claude-dotfiles` | `~/.claude` 전역 설정의 이식 가능 자산 버전 관리 | `C:\Users\jihon\.claude` | 진행중 | [[20-projects/claude-dotfiles/PROJECT-CARD]] |
 | `for-marketing` | aiwebbuilder·embolos 마케팅 자동화 허브 + 관제 대시보드 | `C:\Users\강지호\project\for-marketing` (PC 이관 예정) | 진행중 | [[20-projects/for-marketing/PROJECT-CARD]] |
 | `aiwebbuilder` | 한국 시장 특화 AI 웹사이트 빌더 — 마케팅 실행 지식 베이스 | `(사용자 홈)\projectaiwebbuilder` | 진행중 | [[20-projects/aiwebbuilder/PROJECT-CARD]] |
+| `stockhedge-landing` | StockHedge 공식 회사 홈페이지와 도메인·이메일 수신 기반 | `(사용자 홈)\TheNewProject\StockHedgeLanding` | 운영중 | [[20-projects/stockhedge-landing/PROJECT-CARD]] |
 
 ## 갱신 규칙
 
