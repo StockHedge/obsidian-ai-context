@@ -6,9 +6,9 @@ status: active
 repo_path: C:\youth-investment
 remote_url: https://github.com/StockHedge/YouthInvestment
 branch: main
-head_commit: ce6defd5 (origin/main, 2026-08-17)
-updated: 2026-08-17
-last_verified: 2026-08-17
+head_commit: 11bc802a (origin/main, 2026-09-02)
+updated: 2026-09-02
+last_verified: 2026-09-02
 agents: [claude-code]
 tags: [fintech, education, simulation-trading, fastapi, expo]
 ---
@@ -58,24 +58,22 @@ tags: [fintech, education, simulation-trading, fastapi, expo]
 
 ## 현재 단계
 
-**개발자 계정 운영 E2E 진행 중 (2026-08-18 분기점 인계)** — 로그인·교육 3레벨(각 100점)·
-성향조사(MODERATE)·거래목록·종목상세·리포트·랭킹까지 검증 완료. **중단 지점: 매수 주문
-체결 직전** (이후 포트폴리오→미션→기프티콘 교환 순). 상세 체크리스트는 저장소
-`docs/PROJECT_STATUS.md` §4-1 + §9 프롬프트가 기준.
+**출시 전 안정화 — 리뷰 Medium 마감 · 웹 재구조 3단계 · EOD 하드닝 · W/A2 (2026-09-02, PR #105~#124)**
 
-E2E 중 결함 2건 발견·수정·배포 완료(토큰 자동 갱신 부재 / 종목상세 네이티브 `<text>`
-크래시). 잔여 이슈 4건(교육 본문 빈 값, 홈 지수 위젯 0, edge-to-edge 탭바 겹침,
-퀴즈 미답 안내 부재)은 미수정 기록 상태.
+- 리뷰 Medium 4건(refresh 회전+denylist·웹 CSP·N+1 배치·시즌 자동 정산), 웹
+  데스크톱 재구조 1~3단계(랜딩·Auth 스플릿·G마켓 산스·루트 `DESIGN.md`·앱 셸
+  컨테이너), EOD 첫 실전 결함 3건 + 하드닝(벌크 업서트 19분→13초·`eod_window`·
+  백업 크론), W 스트릭 3축, A2 운영자 콘솔(사용자 검색·푸시 이력, 마이그 030).
+- 게이트: pytest **291/291** · tsc 0 · alembic 운영 리비전 **030** (다음 031).
+- 인계 기준 문서: 저장소 **`docs/ai/NOW.md`** (이력은 `docs/PROJECT_STATUS.md` 아크 표).
+- 결정 대기: `price_history` 중복 207건(000320 단일 종목) 정리 + UNIQUE 마이그 031.
+- 관찰 대기: 백업 크론 첫 발화, 운영자 콘솔 A2 실확인(ADMIN_TOKEN 필요),
+  카카오 실계정 왕복(사용자 수동).
+- 8/18 E2E 잔여 이슈 4건(교육 본문 빈 값, 홈 지수 위젯 0, edge-to-edge 탭바,
+  퀴즈 미답 안내)은 여전히 미수정 기록 상태.
 
-이전 완료(2026-08-17): 출시 게이트 — 백엔드 자동 배포 + 웹 프론트 운영 배포.
-잔여: EAS 네이티브 빌드(Expo 계정 stockhedges-team 로그인 확인됨), 웹 NetworkError·
-Ionicons tofu 조사, PR #69 rebase 결정, quiz v1/v2 통합 결정, SENS 발신번호 승인 대기
-(01076664510 — 승인 시 secrets deploy 만 하면 SMS 개통).
-
-- **시크릿 회전(P0로 기록돼 있던 항목)은 2026-08-17 사용자 결정으로 진행하지 않음.**
-  노출 이력 있는 Neon DB 패스워드·Kakao 키가 유지된다는 리스크는 인지된 상태.
-- 토스증권 Open API(2026-05 사전신청 개시)는 검토 대상이나, WebSocket 미제공(REST 폴링만)이라
-  실시간 시세 요구에서 KIS 우위 — 현행 KIS 유지.
+이전 (2026-09-01, PR #91~#104): 카카오 로그인 복구, 자금·미션 무결성(마이그 027),
+보안 3건(마이그 028), NAV 스냅샷 파이프라인(마이그 029), 종목상세 다크모드.
 
 ## 중요 사건
 
@@ -90,8 +88,15 @@ Ionicons tofu 조사, PR #69 rebase 결정, quiz v1/v2 통합 결정, SENS 발�
   은폐. 교훈: **환경 분기(웹/네이티브, DEBUG 분기)의 프로덕션 쪽 가지는 실환경 E2E
   없이는 커버리지 사각지대** (SMS 500 결함과 동일 패턴 재확인).
 
+- 2026-08-30~09-01: 카카오 로그인이 출시 차단 수준으로 3중 사망(빌드 미주입 /
+  시크릿 미전송 / URI 미등록) + portfolio_snapshots 0행으로 기능 2개 무음 사망을
+  발견·복구. 교훈: **"기능이 있다"는 코드 존재가 아니라 데이터·번들 실측으로
+  판정** (번들 dead-code, 0행 테이블 모두 코드 리뷰로는 안 보였음).
+  상세: [[10-inbox/claude-code/2026-09-01-finple-kakao-review-ledger-nav-darkmode]]
+
 ## 주요 마일스톤
 
+- **2026-09-01: 코드리뷰 대장 마감 + NAV 파이프라인** — PR #91~#104, 인박스 세션노트 참조.
 - **2026-08-17: 출시 게이트 완료** — [[milestones/2026-08-17-launch-gate]] 참조.
 - 2026-06-03: KIS Phase 3~5 완료 (WS 실시간 시세 + 키움 제거), PR #61~#68 머지.
 - 2026-06-01: 백엔드 운영 배포 완료 (Fly.io + Neon + release_command 마이그레이션).
@@ -103,6 +108,10 @@ Ionicons tofu 조사, PR #69 rebase 결정, quiz v1/v2 통합 결정, SENS 발�
 
 ## 마지막 검증
 
-- 확인일: 2026-08-17
-- 확인한 근거: `git fetch` 후 rev-list 실측(1 ahead / 94 behind), 운영 `/health` 200 응답 실측(콜드스타트 8s), origin/main 파일 트리·requirements·package.json 직접 열람.
-- 확인하지 못한 항목: pytest 129 실행(로컬 미동기화 상태라 미실행), fly secrets 실값(KIS 키 설정 여부), 토스증권 API 실계정 발급 상태.
+- 확인일: 2026-09-02
+- 확인한 근거: pytest 291/291 실행, 운영 /health 200, Neon SQL 로 alembic 리비전
+  030·9/2 price_history 2,729행·NAV source=EOD 1행 직접 조회, 웹 CSP 응답 헤더·
+  콘솔 위반 0, 운영 API 연동 dev 브라우저 실화면(랜딩·Auth 스플릿·홈 스트릭 위젯·
+  차트 컨테이너), 마이그 030 Neon 임시 브랜치 왕복 검증.
+- 확인하지 못한 항목: 백업 크론 발화(9/2 22:00 KST 이후), 운영자 콘솔 A2 실화면
+  (ADMIN_TOKEN), 카카오 실계정 왕복, 모바일·태블릿 실기기, EAS 네이티브 빌드.
