@@ -6,9 +6,9 @@ status: active
 repo_path: C:\youth-investment
 remote_url: https://github.com/StockHedge/YouthInvestment
 branch: main
-head_commit: 11bc802a (origin/main, 2026-09-02)
-updated: 2026-09-02
-last_verified: 2026-09-02
+head_commit: 04417663 (origin/main, 2026-09-04)
+updated: 2026-09-04
+last_verified: 2026-09-04
 agents: [claude-code]
 tags: [fintech, education, simulation-trading, fastapi, expo]
 ---
@@ -58,22 +58,21 @@ tags: [fintech, education, simulation-trading, fastapi, expo]
 
 ## 현재 단계
 
-**출시 전 안정화 — 리뷰 Medium 마감 · 웹 재구조 3단계 · EOD 하드닝 · W/A2 (2026-09-02, PR #105~#124)**
+**출시 전 안정화 — 커리큘럼 결정 구현 · 투자 한도 게이트 · P2 성능 · 번들 분할 · 시드 통합 (2026-09-04, PR #125~#149)**
 
-- 리뷰 Medium 4건(refresh 회전+denylist·웹 CSP·N+1 배치·시즌 자동 정산), 웹
-  데스크톱 재구조 1~3단계(랜딩·Auth 스플릿·G마켓 산스·루트 `DESIGN.md`·앱 셸
-  컨테이너), EOD 첫 실전 결함 3건 + 하드닝(벌크 업서트 19분→13초·`eod_window`·
-  백업 크론), W 스트릭 3축, A2 운영자 콘솔(사용자 검색·푸시 이력, 마이그 030).
-- 게이트: pytest **291/291** · tsc 0 · alembic 운영 리비전 **030** (다음 031).
-- 인계 기준 문서: 저장소 **`docs/ai/NOW.md`** (이력은 `docs/PROJECT_STATUS.md` 아크 표).
-- 결정 대기: `price_history` 중복 207건(000320 단일 종목) 정리 + UNIQUE 마이그 031.
-- 관찰 대기: 백업 크론 첫 발화, 운영자 콘솔 A2 실확인(ADMIN_TOKEN 필요),
-  카카오 실계정 왕복(사용자 수동).
-- 8/18 E2E 잔여 이슈 4건(교육 본문 빈 값, 홈 지수 위젯 0, edge-to-edge 탭바,
-  퀴즈 미답 안내)은 여전히 미수정 기록 상태.
+- 교육: 안전자산 5강(5~9)·Level 3·4 stub 교체·Level 10 주문 이해로 0~20 연속. **L0~2 강제
+  게이트 해제 → 투자 한도 연동**(미완 100만 / L1 300만 / L2 무제한, 보유 원가 합산).
+  행동 연동은 안내형(레벨별 "바로 해보기" CTA). 교육 컨텐츠는 코드 원천·매 배포 upsert.
+- 운영 DB: `price_history` 중복 207행 정리 + UNIQUE(마이그 031), 중복 인덱스 40개 제거
+  (마이그 032, 32→20 MB). API gzip, Pages 해시 자산 immutable, 웹 초기 번들 −20%.
+- 게이트: pytest **318/318** · tsc 0 · alembic 운영 리비전 **032** (다음 033).
+- 인계 기준 문서: 저장소 **`docs/ai/NOW.md`**, 사용자 결정 정본 **`docs/DECISIONS_PENDING_2026-09-04.md`**
+  (포인트 경제·거래시간 문서·WS/상시 머신·실현손익 net·실제 잠금 + 사용자 직접 검증 + 운영 절차).
+- 결정 불필요한 코드 작업은 소진. 다음 세션은 결정부터.
+- 관찰 대기: 16:30 EOD 본 실행이 제때 발화하는 날의 `갱신 필드 분포`, 운영자 콘솔 A2
+  실화면(ADMIN_TOKEN), 모바일 뷰·카카오 실계정(사용자).
 
-이전 (2026-09-01, PR #91~#104): 카카오 로그인 복구, 자금·미션 무결성(마이그 027),
-보안 3건(마이그 028), NAV 스냅샷 파이프라인(마이그 029), 종목상세 다크모드.
+이전 (2026-09-02, PR #105~#124): 리뷰 Medium 마감, 웹 재구조 3단계, EOD 하드닝, W/A2.
 
 ## 중요 사건
 
@@ -94,8 +93,18 @@ tags: [fintech, education, simulation-trading, fastapi, expo]
   판정** (번들 dead-code, 0행 테이블 모두 코드 리뷰로는 안 보였음).
   상세: [[10-inbox/claude-code/2026-09-01-finple-kakao-review-ledger-nav-darkmode]]
 
+- 2026-09-02 발견: 운영 `education_contents` 에 Level 0~4 만 존재 — 마이그 021(2026-05)의
+  Level 11~20 INSERT 가 stamp 부트스트랩에서 한 번도 실행되지 않음. **8/20 미션 시드 유실과
+  같은 근본원인의 두 번째 반복**(그때 INSERT 마이그 전수 점검 누락). 시드성 데이터를
+  `_seed_essentials` 카탈로그 upsert 로 전면 이관(0~20). 상세:
+  [[10-inbox/claude-code/2026-09-04-finple-curriculum-cap-gate-p2-bundle-seed]]
+- 2026-09-03 발견: 8/22 결정 문서의 "게이트 없음" 서술이 코드와 불일치(L0~2 강제 게이트가
+  존재) — 결정(라)의 의미가 바뀌어 사용자 재확인 후 강제 해제·한도 대체. 교훈: 결정지의
+  "현행" 은 착수 시 코드로 재검증.
+
 ## 주요 마일스톤
 
+- **2026-09-04: 커리큘럼 결정 구현 + 한도 게이트 + P2** — PR #125~#148, 인박스 세션노트 참조.
 - **2026-09-01: 코드리뷰 대장 마감 + NAV 파이프라인** — PR #91~#104, 인박스 세션노트 참조.
 - **2026-08-17: 출시 게이트 완료** — [[milestones/2026-08-17-launch-gate]] 참조.
 - 2026-06-03: KIS Phase 3~5 완료 (WS 실시간 시세 + 키움 제거), PR #61~#68 머지.
@@ -108,10 +117,11 @@ tags: [fintech, education, simulation-trading, fastapi, expo]
 
 ## 마지막 검증
 
-- 확인일: 2026-09-02
-- 확인한 근거: pytest 291/291 실행, 운영 /health 200, Neon SQL 로 alembic 리비전
-  030·9/2 price_history 2,729행·NAV source=EOD 1행 직접 조회, 웹 CSP 응답 헤더·
-  콘솔 위반 0, 운영 API 연동 dev 브라우저 실화면(랜딩·Auth 스플릿·홈 스트릭 위젯·
-  차트 컨테이너), 마이그 030 Neon 임시 브랜치 왕복 검증.
-- 확인하지 못한 항목: 백업 크론 발화(9/2 22:00 KST 이후), 운영자 콘솔 A2 실화면
-  (ADMIN_TOKEN), 카카오 실계정 왕복, 모바일·태블릿 실기기, EAS 네이티브 빌드.
+- 확인일: 2026-09-04
+- 확인한 근거: pytest 318/318, Neon SQL(alembic 032 · price_history 315,339행·중복 0 ·
+  인덱스 20 MB · education_contents 21행), 운영 API(`investment_cap`·`unlocks`·`action`),
+  운영 웹 실화면(교육 트리 라벨·Level 3/5 상세 CTA·L5 퀴즈 통과 → 예·적금 화면), 로컬
+  SQLite E2E(교육 0건 계정: 한도 거절/체결/누적 거절·게이트 UI), Pages/Fly 응답 헤더 실측,
+  마이그 031·032 Neon 임시 브랜치 왕복 검증.
+- 확인하지 못한 항목: 운영자 콘솔 A2 실화면(ADMIN_TOKEN), 모바일 뷰포트·실기기, 카카오
+  실계정, EAS 네이티브 빌드, 16:30 EOD 본 실행의 필드 분포.
