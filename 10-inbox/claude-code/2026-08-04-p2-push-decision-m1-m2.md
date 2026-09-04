@@ -5,9 +5,12 @@ project: embolos
 status: active
 created: 2026-08-04
 agents: [claude-code]
-review_by: 2026-08-11
+review_by: 2026-10-04
 tags: [app-track, push-notifications, eas, expo, build-system-decision]
 ---
+
+> 2026-09-04 인박스 검토: M3(앱 측 expo-notifications·등록 훅) 미완이라 승격 근거 부족 →
+> `review_by` 2026-08-11 → 2026-10-04 재지정. embolos 저장소에서 M3 상태 확인 후 승격/보관 결정.
 
 # P2 푸시 알림 — 구조 결정 승인 + M1·M2 구현 (진행 중)
 
